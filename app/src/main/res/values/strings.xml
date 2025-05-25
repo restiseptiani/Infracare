@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">InfraCare</string>
+    <string name="slogan">Cepat Lapor, Cepat Tanggap</string>
+    <string name="get_started">Get Started!</string>
+    <string name="masuk">Masuk</string>
+    <string name="daftar">Daftar</string>
 </resources>
