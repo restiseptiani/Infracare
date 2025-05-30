@@ -4,4 +4,16 @@
     <string name="get_started">Get Started!</string>
     <string name="masuk">Masuk</string>
     <string name="daftar">Daftar</string>
+    <string name="email">Email</string>
+    <string name="password">Kata Sandi</string>
+    <string name="remember">Ingat Saya</string>
+    <string name="lupapassword">Lupa Kata Sandi?</string>
+    <string name="atau">Atau</string>
+    <string name="google">Masuk Dengan Google</string>
+    <string name="blm">Belum Punya Akun?</string>
+    <string name="nama">Nama Lengkap</string>
+    <string name="hp">Masukan Nomor Telepon</string>
+    <string name="confirmpassword">Konfirmasi Kata Sandi</string>
+    <string name="syaratketentuan">Saya Menyetujui Syarat dan Ketentuan</string>
+    <string name="sdh">Sudah Punya Akun?</string>
 </resources>

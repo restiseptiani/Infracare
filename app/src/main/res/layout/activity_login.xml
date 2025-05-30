@@ -1,10 +1,221 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/main"
     tools:context=".LoginActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <ImageView
+            android:id="@+id/iv_logo"
+            android:layout_width="197dp"
+            android:layout_height="161dp"
+            android:layout_marginTop="40dp"
+            android:contentDescription="Logo"
+            android:src="@drawable/logo_login"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/tv_Masuk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/masuk"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_logo" />
+
+
+        <TextView
+            android:id="@+id/tv_Email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/email"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_Masuk" />
+
+        <EditText
+            android:id="@+id/emailEditText"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginEnd="28dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/edittext_background"
+            android:drawableEnd="@drawable/ic_mail"
+            android:hint="Masukan Email"
+            android:inputType="textEmailAddress"
+            android:padding="12dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/grey"
+            app:layout_constraintTop_toBottomOf="@id/tv_Email"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+
+        <TextView
+            android:id="@+id/tv_Password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/password"
+            android:textColor="@color/white"
+            app:layout_constraintTop_toBottomOf="@id/emailEditText"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/passwordEditText"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginEnd="28dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/edittext_background"
+            android:drawableEnd="@drawable/ic_eyes"
+            android:hint="Masukan Kata sandi"
+            android:inputType="textPassword"
+            android:padding="12dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/grey"
+            app:layout_constraintTop_toBottomOf="@id/tv_Password"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+
+        <CheckBox
+            android:id="@+id/cb_remember"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:buttonTint="@color/white"
+            android:checked="false"
+            android:text="@string/remember"
+            android:textColor="@color/white"
+            app:layout_constraintTop_toBottomOf="@id/passwordEditText"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_lupapassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="28dp"
+            android:text="@string/lupapassword"
+            android:textColor="@color/white"
+            app:layout_constraintTop_toBottomOf="@id/passwordEditText"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@color/secondary"
+            android:text="@string/masuk"
+            app:cornerRadius="8dp"
+            app:layout_constraintTop_toBottomOf="@id/cb_remember"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+
+        <ImageView
+            android:id="@+id/iv_lineStart"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/white"
+            app:layout_constraintTop_toBottomOf="@id/btn_login"
+            app:layout_constraintEnd_toStartOf="@id/tv_atau"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_atau"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/atau"
+            android:textColor="@color/white"
+            app:layout_constraintTop_toBottomOf="@id/btn_login"
+            app:layout_constraintStart_toEndOf="@id/iv_lineStart"
+            app:layout_constraintEnd_toStartOf="@id/iv_lineEnd" />
+
+        <ImageView
+            android:id="@+id/iv_lineEnd"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/white"
+            app:layout_constraintTop_toBottomOf="@id/btn_login"
+            app:layout_constraintStart_toEndOf="@id/tv_atau"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <Button
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+            android:id="@+id/btn_google"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="10dp"
+            app:icon="@drawable/ic_google"
+            app:iconGravity="textStart"
+            app:iconPadding="8dp"
+            app:iconTint="@null"
+            android:text="Masuk dengan Google"
+            android:textColor="@color/white"
+            app:strokeColor="@color/white"
+            app:strokeWidth="1dp"
+            app:cornerRadius="8dp"
+            app:layout_constraintTop_toBottomOf="@id/tv_atau"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_blm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/blm"
+            android:textColor="@color/white"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@id/btn_google"
+            app:layout_constraintEnd_toStartOf="@id/tv_daftar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/tv_daftar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/daftar"
+            android:textColor="@color/secondary"
+            app:layout_constraintTop_toBottomOf="@id/btn_google"
+            app:layout_constraintStart_toEndOf="@id/tv_blm"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
