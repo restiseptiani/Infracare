@@ -41,6 +41,7 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
 }
 
 dependencies {
@@ -49,7 +50,8 @@ dependencies {
     implementation("com.google.android.material:material:1.10.0")
 
     // Image Slider
-    implementation("com.github.smarteist:autoimageslider:1.3.9")
+    implementation ("com.github.ictfoysal:multilibrary:6.0")
+
 
     // RecyclerView
     implementation("androidx.recyclerview:recyclerview:1.3.1")

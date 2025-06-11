@@ -1,59 +1,69 @@
 package com.example.infracare
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.infracare.adapter.CarouselAdapter
+import com.example.infracare.adapter.NewsAdapter
+import com.example.infracare.model.NewsItem
+import com.library.foysaltech.smarteist.autoimageslider.SliderView
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [SemuaFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class SemuaFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var carouselSlider: SliderView
+    private lateinit var recyclerView: RecyclerView
+
+    private lateinit var carouselAdapter: CarouselAdapter
+    private lateinit var newsAdapter: NewsAdapter
+
+    // Dummy data
+    private val carouselItems = listOf(
+        NewsItem("Proyek Air Bersih di Pedesaan", "https://images.unsplash.com/photo-1503220317375-aaad61436b1b","infrastruktur"),
+        NewsItem("Inovasi Sistem Drainase", "https://artaprecast.com/wp-content/uploads/2024/10/Keunggulan-Beton-Precast-Drainase-Perkotaan-3.jpg","infrastruktur")
+    )
+
+    private val newsItems = listOf(
+        NewsItem("Inovasi Sistem Drainase Anti-Banjir", "https://images.unsplash.com/photo-1570129477492-45c003edd2be", "Infrastruktur"),
+        NewsItem("Pemeliharaan Jalan Raya di Musim Hujan", "https://www.suarasurabaya.net/wp-content/uploads/2021/01/WhatsApp-Image-2021-01-18-at-08.44.56-2-840x493.jpeg", "Transportasi"),
+        NewsItem("Revitalisasi Jalur Kereta Api Tua", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgIAs3gwHNFBZTV5CGzCJyIwAKsWCcoRUwRg&s", "Publik")
+    )
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_semua, container, false)
+        savedInstanceState: Bundle?
+    ): View {
+        val view = inflater.inflate(R.layout.fragment_semua, container, false)
+
+        carouselSlider = view.findViewById(R.id.carouselSlider)
+        recyclerView = view.findViewById(R.id.newsRecyclerView)
+
+        setupCarousel()
+        setupRecyclerView()
+
+        return view
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment SemuaFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            SemuaFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    private fun setupCarousel() {
+        carouselAdapter = CarouselAdapter(carouselItems)
+        carouselSlider.setSliderAdapter(carouselAdapter)
+
+        // Konfigurasi tambahan agar slider bergerak otomatis
+        carouselSlider.apply {
+            autoCycleDirection = SliderView.AUTO_CYCLE_DIRECTION_BACK_AND_FORTH
+            scrollTimeInSec = 3
+            isAutoCycle = true
+            startAutoCycle()
+        }
+    }
+
+    private fun setupRecyclerView() {
+        newsAdapter = NewsAdapter(newsItems)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.adapter = newsAdapter
     }
 }

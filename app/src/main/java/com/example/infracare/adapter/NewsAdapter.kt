@@ -13,8 +13,9 @@ import com.example.infracare.model.NewsItem
 class NewsAdapter(private val newsList: List<NewsItem>) : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
 
     inner class NewsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val image: ImageView = itemView.findViewById(R.id.newsImage)
-        val title: TextView = itemView.findViewById(R.id.newsTitle)
+        val image: ImageView = itemView.findViewById(R.id.imageNews)
+        val title: TextView = itemView.findViewById(R.id.textTitle)
+        val category: TextView = itemView.findViewById(R.id.textCategory)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
@@ -25,8 +26,10 @@ class NewsAdapter(private val newsList: List<NewsItem>) : RecyclerView.Adapter<N
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
         val news = newsList[position]
         holder.title.text = news.title
+        holder.category.text = news.category
         Glide.with(holder.itemView.context).load(news.imageUrl).into(holder.image)
     }
 
     override fun getItemCount(): Int = newsList.size
 }
+

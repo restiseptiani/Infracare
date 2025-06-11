@@ -2,15 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="180dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="12dp"
-    android:background="@drawable/carousel_background">
+    android:background="@drawable/bg_card">
 
     <ImageView
         android:id="@+id/carouselImage"
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        app:cornerRadius="16dp"/>
 
     <TextView
         android:id="@+id/carouselTitle"

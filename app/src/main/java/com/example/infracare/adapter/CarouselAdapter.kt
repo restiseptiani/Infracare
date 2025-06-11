@@ -8,6 +8,7 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.example.infracare.R
 import com.example.infracare.model.NewsItem
+import com.library.foysaltech.smarteist.autoimageslider.SliderViewAdapter
 
 class CarouselAdapter(private val items: List<NewsItem>) : SliderViewAdapter<CarouselAdapter.CarouselViewHolder>() {
 
