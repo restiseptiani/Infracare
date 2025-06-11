@@ -53,7 +53,7 @@ class LoginActivity : AppCompatActivity() {
                 } else if (password.length < 8) {
                     passwordEditText.error = "Kata sandi minimal 8 karakter!"
                 } else {
-                    val intent = Intent(this, HomeActivity::class.java)
+                    val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
                 }
             }

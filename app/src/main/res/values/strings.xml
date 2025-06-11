@@ -16,4 +16,6 @@
     <string name="confirmpassword">Konfirmasi Kata Sandi</string>
     <string name="syaratketentuan">Saya Menyetujui Syarat dan Ketentuan</string>
     <string name="sdh">Sudah Punya Akun?</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
