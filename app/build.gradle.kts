@@ -71,4 +71,17 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    // CameraX core
+    implementation ("androidx.camera:camera-core:1.3.1")
+    implementation ("androidx.camera:camera-camera2:1.3.1")
+    implementation ("androidx.camera:camera-lifecycle:1.3.1")
+    implementation ("androidx.camera:camera-view:1.3.1")
+
+    // Activity result (untuk pilih dari galeri)
+    implementation ("androidx.activity:activity-ktx:1.9.0")
+
+    //location
+    implementation ("com.google.android.gms:play-services-location:21.0.1")
+
 }

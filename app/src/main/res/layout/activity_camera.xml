@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cameraRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0A1128">
+
+
+    <androidx.camera.view.PreviewView
+        android:id="@+id/previewView"
+        android:layout_width="match_parent"
+        android:layout_height="650dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="20dp" />
+
+
+    <ImageView
+        android:id="@+id/imagePreview"
+        android:layout_width="match_parent"
+        android:layout_height="650dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="20dp"
+        android:visibility="gone" />
+
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ambil Foto Laporan"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:layout_margin="16dp"
+        android:layout_gravity="top|start" />
+
+
+    <LinearLayout
+        android:id="@+id/layoutControls"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="24dp">
+
+
+        <ImageButton
+            android:id="@+id/btnGallery"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/bg_circle_white"
+            android:src="@drawable/baseline_image_24"
+            app:tint="@android:color/black" />
+
+
+        <ImageButton
+            android:id="@+id/btnCapture"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_marginHorizontal="24dp"
+            android:background="@drawable/bg_circle_yellow"
+            android:src="@drawable/ic_camera"/>
+
+
+        <ImageButton
+            android:id="@+id/btnFlash"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/bg_circle_white"
+            android:src="@drawable/baseline_flash_off_24"
+            app:tint="@android:color/black" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/layoutReview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_gravity="bottom"
+        android:padding="24dp"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/btnRetake"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ulangi"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/black"
+            android:width="150dp"
+            app:cornerRadius="8dp"/>
+
+        <Button
+            android:id="@+id/btnUse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gunakan"
+            android:backgroundTint="@color/secondary"
+            android:textColor="@color/black"
+            android:width="150dp"
+            app:cornerRadius="8dp"
+            android:layout_marginStart="24dp" />
+    </LinearLayout>
+</FrameLayout>
