@@ -1,49 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/main"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#0D1321">
+
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="16dp"
+        android:background="#0D1321">
+
+        <!-- Tombol Kembali -->
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_arrow_back"
+            app:tint="#FFFFFF" />
+
+        <!-- Judul -->
+        <TextView
+            android:id="@+id/tvJudul"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Tambah Laporan"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1" />
+
+        <!-- Foto Profil -->
+        <ImageView
+            android:id="@+id/imgProfile"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/pp"
+            android:scaleType="centerCrop"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/circle_background"
+            android:clipToOutline="true" />
+    </LinearLayout>
+
+    <!-- Konten Scroll -->
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".FormLaporanActivity">
+        android:padding="16dp">
 
         <LinearLayout
-            android:orientation="vertical"
-            android:padding="16dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Judul -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Judul Laporan"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:layout_marginTop="8dp" />
+
+            <EditText
+                android:id="@+id/edtJudul"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Tambahkan laporan untuk postingan anda"
+                android:background="@drawable/edit_text_bg"
+                android:padding="12dp"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#AAAAAA"
+                android:layout_marginBottom="12dp" />
+
+            <!-- Bukti Laporan -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Bukti Laporan"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp" />
 
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:scaleType="centerCrop"
-                android:layout_marginBottom="16dp"/>
+                android:background="@drawable/image_border"
+                android:layout_marginBottom="16dp" />
 
-            <EditText
-                android:id="@+id/edtJudul"
-                android:hint="Judul Laporan"
+            <!-- Lokasi -->
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"/>
-
-            <EditText
-                android:id="@+id/edtDeskripsi"
-                android:hint="Deskripsi Laporan"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:lines="4"
-                android:gravity="top"
-                android:inputType="textMultiLine"
-                android:textColor="@color/white"/>
+                android:text="Lokasi Laporan"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/edtLokasi"
-                android:hint="Lokasi"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:textColor="@color/white"/>
+                android:hint="Lokasi"
+                android:background="@drawable/edit_text_bg"
+                android:padding="12dp"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#AAAAAA"
+                android:layout_marginBottom="12dp" />
+
+            <!-- Deskripsi -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Deskripsi Laporan"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/edtDeskripsi"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:hint="Tambahkan deskripsi untuk laporan anda"
+                android:background="@drawable/edit_text_bg"
+                android:padding="12dp"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#AAAAAA"
+                android:gravity="top"
+                android:inputType="textMultiLine"
+                android:layout_marginBottom="20dp" />
+
+            <!-- Tombol Konfirmasi -->
+            <Button
+                android:id="@+id/btnKonfirmasi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Konfirmasi"
+                android:textColor="#000000"
+                android:backgroundTint="#FBAF17"
+                android:layout_marginBottom="24dp"
+                android:padding="12dp"
+                android:textStyle="bold" />
         </LinearLayout>
     </ScrollView>
+</LinearLayout>

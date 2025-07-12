@@ -1,15 +1,15 @@
 package com.example.infracare
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.location.Location
 import android.net.Uri
 import android.os.Bundle
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.Toast
+import android.widget.*
 import androidx.annotation.RequiresPermission
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -22,6 +22,7 @@ class FormLaporanActivity : AppCompatActivity() {
     private lateinit var edtJudul: EditText
     private lateinit var edtDeskripsi: EditText
     private lateinit var edtLokasi: EditText
+    private lateinit var btnKonfirmasi: Button
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
 
@@ -35,13 +36,15 @@ class FormLaporanActivity : AppCompatActivity() {
         edtJudul = findViewById(R.id.edtJudul)
         edtDeskripsi = findViewById(R.id.edtDeskripsi)
         edtLokasi = findViewById(R.id.edtLokasi)
+        btnKonfirmasi = findViewById(R.id.btnKonfirmasi)
 
-        // Ambil gambar
+        // Ambil gambar dari intent
         val imageUri = intent.getStringExtra("image_uri")
         imageUri?.let {
             imageView.setImageURI(Uri.parse(it))
         }
 
+        // Lokasi
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         if (checkLocationPermission()) {
@@ -52,6 +55,44 @@ class FormLaporanActivity : AppCompatActivity() {
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                 LOCATION_PERMISSION_CODE
             )
+        }
+
+        // Klik tombol konfirmasi
+        btnKonfirmasi.setOnClickListener {
+            val judul = edtJudul.text.toString().trim()
+            val deskripsi = edtDeskripsi.text.toString().trim()
+            val lokasi = edtLokasi.text.toString().trim()
+
+            if (judul.isEmpty() || deskripsi.isEmpty() || lokasi.isEmpty()) {
+                Toast.makeText(this, "Harap lengkapi semua form", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // Simulasi pengiriman laporan (ganti dengan logika asli jika ada)
+            val sukses = true // ubah ke false untuk simulasi gagal
+
+            val message = if (sukses) {
+                "Laporan berhasil dikirim."
+            } else {
+                "Laporan gagal dikirim. Silakan coba lagi."
+            }
+
+            AlertDialog.Builder(this)
+                .setTitle("Konfirmasi")
+                .setMessage(message)
+                .setPositiveButton("OK") { dialog, _ ->
+                    if (sukses) {
+                        // Kembali ke halaman utama (ubah sesuai nama Activity kamu)
+                        val intent = Intent(this, MainActivity::class.java)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                        startActivity(intent)
+                        finish()
+                    } else {
+                        dialog.dismiss()
+                    }
+                }
+                .setCancelable(false)
+                .show()
         }
     }
 
