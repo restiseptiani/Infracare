@@ -1,5 +1,6 @@
 package com.example.infracare
 
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -44,24 +45,23 @@ class SemuaFragment : Fragment() {
             imageUrl = "https://images.unsplash.com/photo-1570129477492-45c003edd2be",
             category = "Drainase",
             source = "Indonesia Emas",
-            timestamp = System.currentTimeMillis() - 60 * 60 * 1000 // 1 jam yang lalu
+            timestamp = System.currentTimeMillis() - 60 * 60 * 1000
         ),
         NewsItem(
             title = "Pemeliharaan Jalan Raya di Musim Hujan",
             imageUrl = "https://www.suarasurabaya.net/wp-content/uploads/2021/01/WhatsApp-Image-2021-01-18-at-08.44.56-2-840x493.jpeg",
             category = "Transportasi",
             source = "Jabar Infrastruktur",
-            timestamp = System.currentTimeMillis() - 2 * 60 * 60 * 1000 // 2 jam yang lalu
+            timestamp = System.currentTimeMillis() - 2 * 60 * 60 * 1000
         ),
         NewsItem(
             title = "Revitalisasi Jalur Kereta Api Tua",
             imageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgIAs3gwHNFBZTV5CGzCJyIwAKsWCcoRUwRg&s",
             category = "Publik",
             source = "Kominfo Indonesia",
-            timestamp = System.currentTimeMillis() - 3 * 60 * 60 * 1000 // 3 jam yang lalu
-            )
+            timestamp = System.currentTimeMillis() - 3 * 60 * 60 * 1000
+        )
     )
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -82,7 +82,6 @@ class SemuaFragment : Fragment() {
         carouselAdapter = CarouselAdapter(carouselItems)
         carouselSlider.setSliderAdapter(carouselAdapter)
 
-        // Konfigurasi tambahan agar slider bergerak otomatis
         carouselSlider.apply {
             autoCycleDirection = SliderView.AUTO_CYCLE_DIRECTION_BACK_AND_FORTH
             scrollTimeInSec = 3
@@ -95,5 +94,18 @@ class SemuaFragment : Fragment() {
         newsAdapter = NewsAdapter(newsItems)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = newsAdapter
-        }
+
+        // Tambahkan spacing antar item (12dp)
+        val spacingInPx = resources.getDimensionPixelSize(R.dimen.recycler_item_spacing)
+        recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
+            override fun getItemOffsets(
+                outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State
+            ) {
+                outRect.bottom = spacingInPx
+                if (parent.getChildAdapterPosition(view) == 0) {
+                    outRect.top = spacingInPx // Optional: spasi atas item pertama
+                }
+            }
+        })
+    }
 }
