@@ -16,6 +16,8 @@ class NewsAdapter(private val newsList: List<NewsItem>) : RecyclerView.Adapter<N
         val image: ImageView = itemView.findViewById(R.id.imageNews)
         val title: TextView = itemView.findViewById(R.id.textTitle)
         val category: TextView = itemView.findViewById(R.id.textCategory)
+        val source: TextView = itemView.findViewById(R.id.textSource)
+        val time: TextView = itemView.findViewById(R.id.textTime)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
@@ -27,9 +29,29 @@ class NewsAdapter(private val newsList: List<NewsItem>) : RecyclerView.Adapter<N
         val news = newsList[position]
         holder.title.text = news.title
         holder.category.text = news.category
+        holder.source.text = news.source
+        holder.time.text = getTimeAgo(news.timestamp)
         Glide.with(holder.itemView.context).load(news.imageUrl).into(holder.image)
     }
 
-    override fun getItemCount(): Int = newsList.size
-}
 
+    override fun getItemCount(): Int = newsList.size
+
+    private fun getTimeAgo(timestamp: Long): String {
+        val now = System.currentTimeMillis()
+        val diff = now - timestamp
+
+        val seconds = diff / 1000
+        val minutes = seconds / 60
+        val hours = minutes / 60
+        val days = hours / 24
+
+        return when {
+            seconds < 60 -> "Baru saja"
+            minutes < 60 -> "$minutes menit yang lalu"
+            hours < 24 -> "$hours jam yang lalu"
+            else -> "$days hari yang lalu"
+        }
+        }
+
+}

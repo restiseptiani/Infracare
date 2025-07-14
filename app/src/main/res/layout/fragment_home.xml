@@ -11,7 +11,8 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp">
 
         <!-- Header: Berita Terkini, Tanggal, Nama & Foto -->
         <LinearLayout
@@ -21,22 +22,43 @@
             android:gravity="center_vertical"
             android:layout_marginBottom="16dp">
 
+            <!-- Kolom Kiri -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <!-- Judul -->
-                <TextView
-                    android:id="@+id/headerTitle"
-                    android:layout_width="wrap_content"
+                <!-- Baris: Berita Terkini dan Foto Profil -->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="● Berita Terkini"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
-                    android:textSize="14sp"
-                    android:layout_marginBottom="4dp" />
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <!-- Judul -->
+                    <TextView
+                        android:id="@+id/headerTitle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="●    Berita Terkini"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:textSize="16sp" />
+
+
+                    <!-- Foto Profil -->
+                    <ImageView
+                        android:id="@+id/profileImage"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_marginStart="8dp"
+                        android:src="@drawable/pp"
+                        android:scaleType="centerCrop"
+                        android:background="@drawable/circle_mask"
+                        android:padding="2dp" />
+                </LinearLayout>
 
                 <!-- Tanggal -->
                 <TextView
@@ -45,7 +67,8 @@
                     android:layout_height="wrap_content"
                     android:text="Senin, 27 Mei 2025"
                     android:textColor="#CCCCCC"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:layout_marginTop="4dp" />
 
                 <!-- Sapaan -->
                 <TextView
@@ -58,17 +81,6 @@
                     android:textStyle="bold"
                     android:layout_marginTop="4dp" />
             </LinearLayout>
-
-            <!-- Foto Profil -->
-            <ImageView
-                android:id="@+id/profileImage"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="8dp"
-                android:src="@drawable/pp"
-                android:scaleType="centerCrop"
-                android:background="@drawable/circle_mask"
-                android:padding="2dp" />
         </LinearLayout>
 
         <!-- TabLayout + ViewPager -->

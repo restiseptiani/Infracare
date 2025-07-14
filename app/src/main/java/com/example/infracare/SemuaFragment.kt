@@ -22,14 +22,44 @@ class SemuaFragment : Fragment() {
 
     // Dummy data
     private val carouselItems = listOf(
-        NewsItem("Proyek Air Bersih di Pedesaan", "https://images.unsplash.com/photo-1503220317375-aaad61436b1b","infrastruktur"),
-        NewsItem("Inovasi Sistem Drainase", "https://artaprecast.com/wp-content/uploads/2024/10/Keunggulan-Beton-Precast-Drainase-Perkotaan-3.jpg","infrastruktur")
+        NewsItem(
+            title = "Proyek Air Bersih di Pedesaan",
+            imageUrl = "https://i.pinimg.com/736x/20/77/82/20778282c48ab25d101fd9baac35f65f.jpg",
+            category = "Hidup Sehat",
+            tags = listOf("Air Bersih", "Desa"),
+            iconResId = R.drawable.ic_health
+        ),
+        NewsItem(
+            title = "Inovasi Sistem Drainase Terbaru",
+            imageUrl = "https://i.pinimg.com/1200x/5a/d6/91/5ad691afbeb1a38dacfb43110a31db5d.jpg",
+            category = "Infrastruktur",
+            tags = listOf("Drainase", "Perkotaan"),
+            iconResId = R.drawable.ic_health
+        )
     )
 
     private val newsItems = listOf(
-        NewsItem("Inovasi Sistem Drainase Anti-Banjir", "https://images.unsplash.com/photo-1570129477492-45c003edd2be", "Infrastruktur"),
-        NewsItem("Pemeliharaan Jalan Raya di Musim Hujan", "https://www.suarasurabaya.net/wp-content/uploads/2021/01/WhatsApp-Image-2021-01-18-at-08.44.56-2-840x493.jpeg", "Transportasi"),
-        NewsItem("Revitalisasi Jalur Kereta Api Tua", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgIAs3gwHNFBZTV5CGzCJyIwAKsWCcoRUwRg&s", "Publik")
+        NewsItem(
+            title = "Inovasi Sistem Drainase Anti-Banjir",
+            imageUrl = "https://images.unsplash.com/photo-1570129477492-45c003edd2be",
+            category = "Drainase",
+            source = "Indonesia Emas",
+            timestamp = System.currentTimeMillis() - 60 * 60 * 1000 // 1 jam yang lalu
+        ),
+        NewsItem(
+            title = "Pemeliharaan Jalan Raya di Musim Hujan",
+            imageUrl = "https://www.suarasurabaya.net/wp-content/uploads/2021/01/WhatsApp-Image-2021-01-18-at-08.44.56-2-840x493.jpeg",
+            category = "Transportasi",
+            source = "Jabar Infrastruktur",
+            timestamp = System.currentTimeMillis() - 2 * 60 * 60 * 1000 // 2 jam yang lalu
+        ),
+        NewsItem(
+            title = "Revitalisasi Jalur Kereta Api Tua",
+            imageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgIAs3gwHNFBZTV5CGzCJyIwAKsWCcoRUwRg&s",
+            category = "Publik",
+            source = "Kominfo Indonesia",
+            timestamp = System.currentTimeMillis() - 3 * 60 * 60 * 1000 // 3 jam yang lalu
+            )
     )
 
 
@@ -65,5 +95,5 @@ class SemuaFragment : Fragment() {
         newsAdapter = NewsAdapter(newsItems)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = newsAdapter
-    }
+        }
 }

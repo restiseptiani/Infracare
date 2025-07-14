@@ -2,7 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
+    android:layout_height="150dp"
     android:layout_marginBottom="12dp"
     app:cardCornerRadius="16dp"
     app:cardElevation="4dp">
@@ -11,37 +11,85 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <!-- Gambar di sebelah kanan -->
         <ImageView
             android:id="@+id/imageNews"
-            android:layout_width="100dp"
+            android:layout_width="120dp"
             android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/dummy"/>
+            android:src="@drawable/dummy" />
 
+        <!-- Konten teks di kiri gambar -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_toEndOf="@id/imageNews"
+            android:layout_marginEnd="3dp"
+            android:layout_toStartOf="@id/imageNews"
             android:orientation="vertical"
-            android:padding="8dp"
-            android:layout_marginStart="50dp">
+            android:padding="12dp">
 
+            <!-- Badge Kategori -->
             <TextView
                 android:id="@+id/textCategory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Kategori"
-                android:textColor="#777" />
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/chip_background"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="4dp"
+                android:text="Drainase"
+                android:textColor="#FFFFFF"
+                android:textSize="10sp" />
 
+            <!-- Judul -->
             <TextView
                 android:id="@+id/textTitle"
-                android:layout_width="wrap_content"
+                android:layout_width="179dp"
                 android:layout_height="wrap_content"
-                android:text="Judul Berita"
-                android:textColor="#000"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="Inovasi Sistem Drainase Anti-Banjir"
+                android:textColor="#000000"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
+            <!-- Info sumber dan waktu -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="4dp"
+                    android:src="@drawable/ic_dot" />
+
+                <!-- Nama Sumber -->
+                <TextView
+                    android:id="@+id/textSource"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="Indonesia Emas"
+                    android:textColor="#9CA3AF"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/textTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1 jam yang lalu"
+                    android:textColor="#9CA3AF"
+                    android:textSize="10sp" />
+            </LinearLayout>
+
         </LinearLayout>
+
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

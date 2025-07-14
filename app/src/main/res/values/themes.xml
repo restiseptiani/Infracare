@@ -1,10 +1,16 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.Material3.Light.NoActionBar">
-    <item name="android:windowBackground">@color/primary</item>
-    <item name="android:statusBarColor">@color/secondary</item>
-    <item name="colorOnSurface">@android:color/white</item>
-
+        <item name="android:windowBackground">@color/primary</item>
+        <item name="android:statusBarColor">@color/secondary</item>
+        <item name="colorOnSurface">@android:color/white</item>
+        <item name="floatingActionButtonStyle" >@style/FabStyle</item>
     </style>
 
+    <style name="FabStyle" parent="Widget.Design.FloatingActionButton">
+        <item name="shapeAppearanceOverlay"> @style/FabShape</item>
+    </style>
+    <style name="FabShape" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerSize">50%</item>
+    </style>
 </resources>

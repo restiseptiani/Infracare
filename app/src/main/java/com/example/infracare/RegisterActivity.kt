@@ -27,7 +27,7 @@ class RegisterActivity : AppCompatActivity()    {
         setContentView(binding.root)
 
         // Tombol "Masuk"
-        masukTextView = findViewById(R.id.tv_daftar)
+        masukTextView = findViewById(R.id.tv_Masuk)
         masukTextView.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
