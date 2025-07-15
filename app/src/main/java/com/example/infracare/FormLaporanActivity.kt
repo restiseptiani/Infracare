@@ -7,6 +7,7 @@ import android.location.Geocoder
 import android.location.Location
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresPermission
 import androidx.appcompat.app.AlertDialog
@@ -37,6 +38,20 @@ class FormLaporanActivity : AppCompatActivity() {
         edtDeskripsi = findViewById(R.id.edtDeskripsi)
         edtLokasi = findViewById(R.id.edtLokasi)
         btnKonfirmasi = findViewById(R.id.btnKonfirmasi)
+        val scrollView = findViewById<ScrollView>(R.id.scrollView)
+
+        // Scroll otomatis saat EditText fokus
+        val scrollToFocusedView = View.OnFocusChangeListener { view, hasFocus ->
+            if (hasFocus) {
+                scrollView.post {
+                    scrollView.smoothScrollTo(0, view.top)
+                }
+            }
+        }
+
+        edtJudul.onFocusChangeListener = scrollToFocusedView
+        edtDeskripsi.onFocusChangeListener = scrollToFocusedView
+        edtLokasi.onFocusChangeListener = scrollToFocusedView
 
         // Ambil gambar dari intent
         val imageUri = intent.getStringExtra("image_uri")
@@ -46,7 +61,6 @@ class FormLaporanActivity : AppCompatActivity() {
 
         // Lokasi
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-
         if (checkLocationPermission()) {
             requestNewLocation()
         } else {
@@ -57,7 +71,7 @@ class FormLaporanActivity : AppCompatActivity() {
             )
         }
 
-        // Klik tombol konfirmasi
+        // Tombol Konfirmasi
         btnKonfirmasi.setOnClickListener {
             val judul = edtJudul.text.toString().trim()
             val deskripsi = edtDeskripsi.text.toString().trim()
@@ -68,21 +82,14 @@ class FormLaporanActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Simulasi pengiriman laporan (ganti dengan logika asli jika ada)
-            val sukses = true // ubah ke false untuk simulasi gagal
-
-            val message = if (sukses) {
-                "Laporan berhasil dikirim."
-            } else {
-                "Laporan gagal dikirim. Silakan coba lagi."
-            }
+            val sukses = true
+            val message = if (sukses) "Laporan berhasil dikirim." else "Laporan gagal dikirim. Silakan coba lagi."
 
             AlertDialog.Builder(this)
                 .setTitle("Konfirmasi")
                 .setMessage(message)
                 .setPositiveButton("OK") { dialog, _ ->
                     if (sukses) {
-                        // Kembali ke halaman utama (ubah sesuai nama Activity kamu)
                         val intent = Intent(this, MainActivity::class.java)
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
                         startActivity(intent)
@@ -161,6 +168,6 @@ class FormLaporanActivity : AppCompatActivity() {
             requestNewLocation()
         } else {
             Toast.makeText(this, "Izin lokasi diperlukan", Toast.LENGTH_SHORT).show()
+            }
         }
-    }
 }

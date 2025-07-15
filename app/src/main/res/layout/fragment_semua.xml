@@ -21,7 +21,7 @@
             app:sliderAutoCycleDirection="back_and_forth"
             app:sliderAutoCycleEnabled="true"
             app:sliderIndicatorAnimationDuration="600"
-            app:sliderScrollTimeInSec="3" />
+            app:sliderScrollTimeInSec="3"/>
 
         <!-- RecyclerView -->
         <TextView
@@ -37,7 +37,7 @@
             android:id="@+id/newsRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="0dp"
             android:nestedScrollingEnabled="false" />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
