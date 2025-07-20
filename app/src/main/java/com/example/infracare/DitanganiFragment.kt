@@ -29,15 +29,28 @@ class DitanganiFragment : Fragment() {
                 kategori = "Saluran Tersumbat",
                 tanggal = "10-07-2025",
                 judul = "Saluran air mampet di Jl Soekarno-Hatta RT 01 RW 01",
-                lokasi = "Jl Soekarno-Hatta, Bandung",
+                lokasi = "Gg. Bu Ilem No.128, Cibaduyut Wetan, Kec. Bojongloa Kidul, Kota Bandung, Jawa Barat 40238, Indonesia",
                 status = "Ditangani",
-                gambarResId = R.drawable.dummy
+                imageUrl = "https://newskaltim.com/wp-content/uploads/2017/08/Tumpukan-sampah-di-drainase-Gunung-Kawi.-int.jpg"
             )
         )
 
-        laporanAdapter = LaporanAdapter(dummyData)
-        recyclerView.adapter = laporanAdapter
+        laporanAdapter = LaporanAdapter(dummyData) { selectedLaporan ->
+            val bundle = Bundle().apply {
+                putParcelable("laporan", selectedLaporan)
+            }
 
+            val detailFragment = DetailLaporanFragment().apply {
+                arguments = bundle
+            }
+
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, detailFragment)
+                .addToBackStack(null)
+                .commit()
+        }
+
+        recyclerView.adapter = laporanAdapter
         return view
     }
 }

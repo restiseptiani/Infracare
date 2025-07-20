@@ -29,15 +29,28 @@ class DisposisiFragment : Fragment() {
                 kategori = "PJU Rusak",
                 tanggal = "12-07-2025",
                 judul = "Lampu jalan rusak di depan SD Cibaduyut",
-                lokasi = "Jl Cibaduyut Lama, Bandung",
+                lokasi = "Gg. Bu Ilem No.128, Cibaduyut Wetan, Kec. Bojongloa Kidul, Kota Bandung, Jawa Barat 40238, Indonesia",
                 status = "Disposisi",
-                gambarResId = R.drawable.dummy
+                imageUrl = "https://multimedia.beritajakarta.id/photo/2014_508c75c8507a2ae5223dfd2faeb98122/5981b757b0197560271ed10541d2accd.jpg"
             )
         )
 
-        laporanAdapter = LaporanAdapter(dummyData)
-        recyclerView.adapter = laporanAdapter
+        laporanAdapter = LaporanAdapter(dummyData) { selectedLaporan ->
+            val bundle = Bundle().apply {
+                putParcelable("laporan", selectedLaporan)
+            }
 
+            val detailFragment = DetailLaporanFragment().apply {
+                arguments = bundle
+            }
+
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, detailFragment)
+                .addToBackStack(null)
+                .commit()
+        }
+
+        recyclerView.adapter = laporanAdapter
         return view
     }
 }

@@ -29,15 +29,28 @@ class DitinjauFragment : Fragment() {
                 kategori = "Sampah Menumpuk",
                 tanggal = "02-07-2025",
                 judul = "Tumpukan sampah di Jl Kembar RT 03 RW 05",
-                lokasi = "Jl Kembar, Kota Bandung",
+                lokasi = "Gg. Bu Ilem No.128, Cibaduyut Wetan, Kec. Bojongloa Kidul, Kota Bandung, Jawa Barat 40238, Indonesia",
                 status = "Ditinjau",
-                gambarResId = R.drawable.dummy
+                imageUrl = "https://cdn.antaranews.com/cache/1200x800/2024/03/03/tumpukan.jpg"
             )
         )
 
-        laporanAdapter = LaporanAdapter(dummyData)
-        recyclerView.adapter = laporanAdapter
+        laporanAdapter = LaporanAdapter(dummyData) { selectedLaporan ->
+            val bundle = Bundle().apply {
+                putParcelable("laporan", selectedLaporan)
+            }
 
+            val detailFragment = DetailLaporanFragment().apply {
+                arguments = bundle
+            }
+
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, detailFragment)
+                .addToBackStack(null)
+                .commit()
+        }
+
+        recyclerView.adapter = laporanAdapter
         return view
     }
 }

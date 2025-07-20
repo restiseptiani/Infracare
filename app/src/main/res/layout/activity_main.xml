@@ -7,6 +7,38 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <!-- Notifikasi Popup -->
+    <LinearLayout
+        android:id="@+id/popupContainer"
+        android:layout_width="298dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center_horizontal"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/popup_bg"
+        android:elevation="8dp"
+        android:visibility="gone"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/popupText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Laporan Anda Terkirim"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:layout_marginEnd="8dp" />
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_check"
+            app:tint="@android:color/white"
+            android:layout_marginStart="95dp"/>
+    </LinearLayout>
+
+    <!-- Fragment Container -->
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
@@ -15,6 +47,7 @@
         app:layout_anchor="@+id/fragment_container"
         app:layout_anchorGravity="center"/>
 
+    <!-- Bottom App Bar -->
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottomAppBar"
         android:layout_width="match_parent"
@@ -33,14 +66,13 @@
             android:id="@+id/bottomNavigationView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:elevation="0dp"
             android:background="@android:color/transparent"
             app:itemIconTint="@color/primary"
             app:itemTextColor="@color/primary"
             app:menu="@menu/bottom_nav" />
-
     </com.google.android.material.bottomappbar.BottomAppBar>
 
+    <!-- Floating Action Button -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"

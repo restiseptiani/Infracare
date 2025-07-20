@@ -4,13 +4,21 @@
         <item name="android:windowBackground">@color/primary</item>
         <item name="android:statusBarColor">@color/secondary</item>
         <item name="colorOnSurface">@android:color/white</item>
-        <item name="floatingActionButtonStyle" >@style/FabStyle</item>
+        <item name="floatingActionButtonStyle">@style/FabStyle</item>
     </style>
 
     <style name="FabStyle" parent="Widget.Design.FloatingActionButton">
-        <item name="shapeAppearanceOverlay"> @style/FabShape</item>
+        <item name="shapeAppearanceOverlay">@style/FabShape</item>
     </style>
+
     <style name="FabShape" parent="ShapeAppearance.MaterialComponents.SmallComponent">
         <item name="cornerSize">50%</item>
     </style>
+
+    <!--  Style untuk animasi dialog -->
+    <style name="DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/dialog_enter</item>
+        <item name="android:windowExitAnimation">@anim/dialog_exit</item>
+    </style>
+
 </resources>

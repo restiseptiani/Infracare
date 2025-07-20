@@ -90,7 +90,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/tab_background"
             app:tabIndicatorColor="@android:color/holo_purple"
-            app:tabTextColor="@android:color/black"
+            app:tabTextColor="#808080"
             app:tabSelectedTextColor="@android:color/black"
             android:layout_marginTop="8dp" />
 

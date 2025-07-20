@@ -1,5 +1,9 @@
 package com.example.infracare.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class Laporan(
     val id: Int,
     val kategori: String,
@@ -7,5 +11,5 @@ data class Laporan(
     val judul: String,
     val lokasi: String,
     val status: String,
-    val gambarResId: Int
-)
+    val imageUrl: String
+) : Parcelable

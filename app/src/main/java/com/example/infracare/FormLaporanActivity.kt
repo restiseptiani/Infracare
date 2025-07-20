@@ -7,6 +7,7 @@ import android.location.Geocoder
 import android.location.Location
 import android.net.Uri
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresPermission
@@ -14,6 +15,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.widget.NestedScrollView
 import com.google.android.gms.location.*
 import java.util.*
 
@@ -26,6 +28,7 @@ class FormLaporanActivity : AppCompatActivity() {
     private lateinit var btnKonfirmasi: Button
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
+    private lateinit var scrollView: NestedScrollView
 
     private val LOCATION_PERMISSION_CODE = 100
 
@@ -38,14 +41,14 @@ class FormLaporanActivity : AppCompatActivity() {
         edtDeskripsi = findViewById(R.id.edtDeskripsi)
         edtLokasi = findViewById(R.id.edtLokasi)
         btnKonfirmasi = findViewById(R.id.btnKonfirmasi)
-        val scrollView = findViewById<ScrollView>(R.id.scrollView)
+        scrollView = findViewById(R.id.scrollView)
 
-        // Scroll otomatis saat EditText fokus
+        // Scroll otomatis ke inputan yang difokus saat keyboard muncul
         val scrollToFocusedView = View.OnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {
-                scrollView.post {
+                scrollView.postDelayed({
                     scrollView.smoothScrollTo(0, view.top)
-                }
+                }, 200)
             }
         }
 
@@ -82,28 +85,56 @@ class FormLaporanActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val sukses = true
-            val message = if (sukses) "Laporan berhasil dikirim." else "Laporan gagal dikirim. Silakan coba lagi."
+            // Inflate layout custom dialog
+            val dialogView = layoutInflater.inflate(R.layout.dialog_konfirmasi, null)
 
-            AlertDialog.Builder(this)
-                .setTitle("Konfirmasi")
-                .setMessage(message)
-                .setPositiveButton("OK") { dialog, _ ->
-                    if (sukses) {
-                        val intent = Intent(this, MainActivity::class.java)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                        startActivity(intent)
-                        finish()
-                    } else {
-                        dialog.dismiss()
-                    }
-                }
+            // Buat AlertDialog dengan custom view
+            val alertDialog = AlertDialog.Builder(this)
+                .setView(dialogView)
                 .setCancelable(false)
-                .show()
+                .create()
+
+            // Ambil referensi tombol di dalam dialog
+            val tvKirim = dialogView.findViewById<TextView>(R.id.tvKirim)
+            val tvTinjauUlang = dialogView.findViewById<TextView>(R.id.tvTinjauUlang)
+
+            // Aksi tombol Kirim
+            tvKirim.setOnClickListener {
+                val intent = Intent(this, MainActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                intent.putExtra("show_popup", true) // Kirim flag
+                startActivity(intent)
+                finish()
+                alertDialog.dismiss()
+            }
+
+
+            // Aksi tombol Tinjau Ulang
+            tvTinjauUlang.setOnClickListener {
+                alertDialog.dismiss()
+            }
+
+            // ✅ Set ukuran dan background dialog agar tidak full lebar dan rounded
+            alertDialog.setOnShowListener {
+                // Hilangkan background default agar background custom terlihat
+                alertDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+                // Atur lebar dialog menjadi 75% dari lebar layar
+                val width = (resources.displayMetrics.widthPixels * 0.75).toInt()
+                alertDialog.window?.setLayout(width, LinearLayout.LayoutParams.WRAP_CONTENT)
+            }
+
+            alertDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+            alertDialog.window?.setGravity(Gravity.CENTER)
+            alertDialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
+            alertDialog.show()
+
         }
+
     }
 
-    private fun checkLocationPermission(): Boolean {
+
+        private fun checkLocationPermission(): Boolean {
         return ContextCompat.checkSelfPermission(
             this,
             Manifest.permission.ACCESS_FINE_LOCATION
@@ -168,6 +199,6 @@ class FormLaporanActivity : AppCompatActivity() {
             requestNewLocation()
         } else {
             Toast.makeText(this, "Izin lokasi diperlukan", Toast.LENGTH_SHORT).show()
-            }
         }
+    }
 }

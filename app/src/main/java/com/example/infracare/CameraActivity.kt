@@ -3,21 +3,17 @@ package com.example.infracare
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Matrix
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageCapture
-import androidx.camera.core.ImageCaptureException
-import androidx.camera.core.Preview
+import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.app.ActivityCompat
@@ -29,8 +25,9 @@ class CameraActivity : AppCompatActivity() {
     private lateinit var previewView: PreviewView
     private lateinit var imagePreview: ImageView
     private lateinit var btnCapture: ImageButton
-    private lateinit var btnFlash: ImageButton
+    private lateinit var btnFlash: ImageView
     private lateinit var btnGallery: ImageButton
+    private lateinit var btnRotate: ImageButton
     private lateinit var btnRetake: Button
     private lateinit var btnUse: Button
     private lateinit var layoutControls: View
@@ -40,6 +37,7 @@ class CameraActivity : AppCompatActivity() {
     private var imageCapture: ImageCapture? = null
     private var flashEnabled = false
     private var selectedImageUri: Uri? = null
+    private var lensFacing = CameraSelector.LENS_FACING_BACK // Default: belakang
 
     private val pickImage = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         uri?.let {
@@ -59,6 +57,7 @@ class CameraActivity : AppCompatActivity() {
         btnCapture = findViewById(R.id.btnCapture)
         btnFlash = findViewById(R.id.btnFlash)
         btnGallery = findViewById(R.id.btnGallery)
+        btnRotate = findViewById(R.id.btnRotate)
         btnRetake = findViewById(R.id.btnRetake)
         btnUse = findViewById(R.id.btnUse)
         layoutControls = findViewById(R.id.layoutControls)
@@ -73,10 +72,20 @@ class CameraActivity : AppCompatActivity() {
 
         btnCapture.setOnClickListener { takePhoto() }
         btnGallery.setOnClickListener { pickImage.launch("image/*") }
+
         btnFlash.setOnClickListener {
             flashEnabled = !flashEnabled
             imageCapture?.flashMode = if (flashEnabled) ImageCapture.FLASH_MODE_ON else ImageCapture.FLASH_MODE_OFF
             btnFlash.setImageResource(if (flashEnabled) R.drawable.baseline_flash_on_24 else R.drawable.baseline_flash_off_24)
+        }
+
+        btnRotate.setOnClickListener {
+            lensFacing = if (lensFacing == CameraSelector.LENS_FACING_BACK) {
+                CameraSelector.LENS_FACING_FRONT
+            } else {
+                CameraSelector.LENS_FACING_BACK
+            }
+            startCamera()
         }
 
         btnRetake.setOnClickListener {
@@ -104,10 +113,13 @@ class CameraActivity : AppCompatActivity() {
             }
 
             imageCapture = ImageCapture.Builder()
-                .setFlashMode(ImageCapture.FLASH_MODE_OFF)
+                .setFlashMode(if (flashEnabled) ImageCapture.FLASH_MODE_ON else ImageCapture.FLASH_MODE_OFF)
                 .build()
 
-            val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+            val cameraSelector = CameraSelector.Builder()
+                .requireLensFacing(lensFacing)
+                .build()
+
             try {
                 cameraProvider.unbindAll()
                 cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture)
@@ -134,7 +146,15 @@ class CameraActivity : AppCompatActivity() {
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                     val uri = Uri.fromFile(photoFile)
                     selectedImageUri = uri
-                    imagePreview.setImageURI(uri)
+
+                    if (lensFacing == CameraSelector.LENS_FACING_FRONT) {
+                        val bitmap = BitmapFactory.decodeFile(photoFile.absolutePath)
+                        val flippedBitmap = flipBitmapHorizontal(bitmap)
+                        imagePreview.setImageBitmap(flippedBitmap)
+                    } else {
+                        imagePreview.setImageURI(uri)
+                    }
+
                     tvTitle.text = "Tinjau Foto"
                     showReview()
                 }
@@ -142,11 +162,20 @@ class CameraActivity : AppCompatActivity() {
         )
     }
 
+    private fun flipBitmapHorizontal(bitmap: Bitmap): Bitmap {
+        val matrix = Matrix().apply {
+            preScale(-1f, 1f)
+        }
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+    }
+
     private fun showReview() {
         imagePreview.visibility = View.VISIBLE
         previewView.visibility = View.GONE
         layoutControls.visibility = View.GONE
         layoutReview.visibility = View.VISIBLE
+        btnFlash.visibility = View.GONE
+        btnRotate.visibility = View.GONE
     }
 
     private fun resetCameraView() {
@@ -156,6 +185,8 @@ class CameraActivity : AppCompatActivity() {
         previewView.visibility = View.VISIBLE
         layoutControls.visibility = View.VISIBLE
         layoutReview.visibility = View.GONE
+        btnFlash.visibility = View.VISIBLE
+        btnRotate.visibility = View.VISIBLE
     }
 
     private fun allPermissionsGranted(): Boolean {
