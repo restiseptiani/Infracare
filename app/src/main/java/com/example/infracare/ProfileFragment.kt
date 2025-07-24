@@ -3,9 +3,13 @@ package com.example.infracare
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.util.DisplayMetrics
 import android.view.*
 import android.widget.*
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 
 class ProfileFragment : Fragment() {
@@ -16,7 +20,6 @@ class ProfileFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
 
-        val btnBack = view.findViewById<ImageView>(R.id.btnBack)
         val profileName = view.findViewById<TextView>(R.id.profileName)
         val profileEmail = view.findViewById<TextView>(R.id.profileEmail)
         val btnLogout = view.findViewById<Button>(R.id.btnLogout)
@@ -26,9 +29,17 @@ class ProfileFragment : Fragment() {
         profileName.text = "VINA ANJANI"
         profileEmail.text = "vinaanjan@gmail.com"
 
-        btnBack.setOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
-        }
+        // Atur judul dengan simbol ● berwarna secondary
+        val tvTitle = view.findViewById<TextView>(R.id.tvTitle)
+        val fullText = "●    Profile"
+        val spannable = SpannableString(fullText)
+        val secondaryColor = ContextCompat.getColor(requireContext(), R.color.secondary)
+        spannable.setSpan(
+            ForegroundColorSpan(secondaryColor),
+            0, 1, // hanya karakter ●
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        tvTitle.text = spannable
 
         btnLogout.setOnClickListener {
             showLogoutDialog()

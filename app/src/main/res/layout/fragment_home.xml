@@ -56,8 +56,9 @@
                         android:layout_marginStart="8dp"
                         android:src="@drawable/pp"
                         android:scaleType="centerCrop"
-                        android:background="@drawable/circle_mask"
-                        android:padding="2dp" />
+                        android:background="@drawable/circle_background"
+                        android:padding="2dp"
+                        android:clipToOutline="true" />
                 </LinearLayout>
 
                 <!-- Tanggal -->
