@@ -26,8 +26,8 @@ class ProfileFragment : Fragment() {
         val layoutBahasa = view.findViewById<LinearLayout>(R.id.layoutBahasa)
 
         // Dummy data
-        profileName.text = "VINA ANJANI"
-        profileEmail.text = "vinaanjan@gmail.com"
+        profileName.text = "RESIANA"
+        profileEmail.text = "resiana789@gmail.com"
 
         // Atur judul dengan simbol ● berwarna secondary
         val tvTitle = view.findViewById<TextView>(R.id.tvTitle)

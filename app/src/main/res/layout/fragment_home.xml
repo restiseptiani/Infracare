@@ -76,7 +76,7 @@
                     android:id="@+id/greetingText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="SELAMAT DATANG,\nResiana"
+                    android:text="SELAMAT DATANG,\nRESIANA"
                     android:textColor="@android:color/white"
                     android:textSize="20sp"
                     android:textStyle="bold"
