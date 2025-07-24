@@ -1,59 +1,97 @@
 package com.example.infracare
 
+import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
+import android.util.DisplayMetrics
+import android.view.*
+import android.widget.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ProfileFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ProfileFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+        val view = inflater.inflate(R.layout.fragment_profile, container, false)
+
+        val btnBack = view.findViewById<ImageView>(R.id.btnBack)
+        val profileName = view.findViewById<TextView>(R.id.profileName)
+        val profileEmail = view.findViewById<TextView>(R.id.profileEmail)
+        val btnLogout = view.findViewById<Button>(R.id.btnLogout)
+        val layoutBahasa = view.findViewById<LinearLayout>(R.id.layoutBahasa)
+
+        // Dummy data
+        profileName.text = "VINA ANJANI"
+        profileEmail.text = "vinaanjan@gmail.com"
+
+        btnBack.setOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+
+        btnLogout.setOnClickListener {
+            showLogoutDialog()
+        }
+
+        layoutBahasa.setOnClickListener {
+            val intent = Intent(android.provider.Settings.ACTION_LOCALE_SETTINGS)
+            startActivity(intent)
+        }
+
+        return view
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ProfileFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ProfileFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    private fun showLogoutDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_konfirmasi, null)
+
+        val tvTitle = dialogView.findViewById<TextView>(R.id.tvTitle)
+        val tvMessage = dialogView.findViewById<TextView>(R.id.tvMessage)
+        val tvTinjauUlang = dialogView.findViewById<TextView>(R.id.tvTinjauUlang)
+        val tvKirim = dialogView.findViewById<TextView>(R.id.tvKirim)
+
+        tvTitle.text = "Logout dari aplikasi?"
+        tvMessage.text = "Pilih Logout untuk keluar dari aplikasi.\nPilih Batal jika ingin tetap masuk."
+        tvTinjauUlang.text = "Batal"
+        tvKirim.text = "Logout"
+
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .setCancelable(false)
+            .create()
+
+        tvTinjauUlang.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        tvKirim.setOnClickListener {
+            dialog.dismiss()
+            logout()
+        }
+
+        dialog.setOnShowListener {
+            dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+            val metrics = DisplayMetrics()
+            requireActivity().windowManager.defaultDisplay.getMetrics(metrics)
+            val width = (metrics.widthPixels * 0.75).toInt()
+
+            dialog.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
+            dialog.window?.setGravity(Gravity.CENTER)
+            dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
+        }
+
+        dialog.show()
+    }
+
+    private fun logout() {
+        val sharedPreferences = requireActivity().getSharedPreferences("user_session", 0)
+        val editor = sharedPreferences.edit()
+        editor.clear()
+        editor.apply()
+
+        val intent = Intent(requireContext(), StartedActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
     }
 }

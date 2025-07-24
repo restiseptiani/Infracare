@@ -1,60 +1,100 @@
 package com.example.infracare
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.infracare.adapter.ForumAdapter
+import com.example.infracare.databinding.FragmentForumBinding
+import com.example.infracare.model.ForumPost
 
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ForumFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ForumFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private var _binding: FragmentForumBinding? = null
+    private val binding get() = _binding!!
+
+    private val REQUEST_POST = 101
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_forum, container, false)
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentForumBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ForumFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ForumFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Ubah warna icon ● menjadi warna secondary
+        val titleText = "●    Forum"
+        val spannable = SpannableString(titleText)
+        val colorSecondary = ContextCompat.getColor(requireContext(), R.color.secondary)
+        spannable.setSpan(
+            ForegroundColorSpan(colorSecondary),
+            0,
+            1,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        binding.root.findViewById<TextView>(R.id.forumTitleTextView).text = spannable
+
+        // Dummy data
+        val dummyData = listOf(
+            ForumPost(
+                1,
+                "Yor Forger",
+                "13 Nov 2024",
+                "Jakarta",
+                "Apa Teknologi Ramah Lingkungan yang Paling Berdampak Menurut Anda?",
+                "Dunia terus menciptakan teknologi baru untuk melawan perubahan iklim, seperti energi surya, mobil listrik, dan bangunan berkonsep hijau...",
+                "https://images.unsplash.com/photo-1603791440384-56cd371ee9a7",
+                15
+            ),
+            ForumPost(
+                2,
+                "Toji Fushiguro",
+                "11 Okt 2024",
+                "Lampung",
+                "Peran Energi Terbarukan dalam Menyelamatkan Planet Kita",
+                "Penggunaan energi terbarukan seperti matahari, angin, dan air menjadi kunci dalam mengurangi emisi karbon...",
+                null,
+                15
+            )
+        )
+
+        // Atur RecyclerView
+        binding.forumRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.forumRecyclerView.adapter = ForumAdapter(dummyData)
+
+        // Aksi tombol "Buat Postingan"
+        binding.btnBuatPostingan.setOnClickListener {
+            val intent = Intent(requireContext(), BuatPostinganActivity::class.java)
+            startActivityForResult(intent, REQUEST_POST)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == REQUEST_POST && resultCode == Activity.RESULT_OK) {
+            val isFromForum = data?.getBooleanExtra("from_forum", false) == true
+            if (isFromForum) {
+                (activity as? MainActivity)?.showPopupNotification("Forum Anda Terkirim")
             }
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

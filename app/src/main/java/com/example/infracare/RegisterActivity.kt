@@ -129,7 +129,7 @@ class RegisterActivity : AppCompatActivity()    {
         // Button daftar
         binding.btnLogin.setOnClickListener {
             if (isFormValid()) {
-                startActivity(Intent(this, LoginActivity::class.java))
+                startActivity(Intent(this, VerificationActivity::class.java))
                 finish()
             }
         }

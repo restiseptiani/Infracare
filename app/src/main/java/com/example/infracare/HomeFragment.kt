@@ -32,7 +32,7 @@ class HomeFragment : Fragment() {
 
         // Ubah warna ● pada headerTitle
         val headerTitle = view.findViewById<TextView>(R.id.headerTitle)
-        val fullText = "● Berita Terkini"
+        val fullText = "●    Berita Terkini"
         val spannable = SpannableString(fullText)
 
         spannable.setSpan(

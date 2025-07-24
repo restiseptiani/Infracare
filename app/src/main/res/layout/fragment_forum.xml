@@ -1,14 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/forumScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ForumFragment">
+    android:background="@color/primary"
+    android:padding="16dp">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="24dp">
 
-</FrameLayout>
+        <!-- Header: Forum dan Profile -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="16dp">
+
+            <!-- Judul -->
+            <TextView
+                android:id="@+id/forumTitleTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="●    Forum"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="16sp" />
+
+
+            <!-- Foto Profil -->
+            <ImageView
+                android:id="@+id/profileImage"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="8dp"
+                android:src="@drawable/pp"
+                android:scaleType="centerCrop"
+                android:background="@drawable/circle_mask"
+                android:padding="2dp" />
+        </LinearLayout>
+
+        <!-- Search + Buat Postingan -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/rounded_white"
+            android:padding="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp">
+
+            <!-- Search Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/searchEditText"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="48dp"
+                    android:hint="Cari Topik"
+                    android:textSize="14sp"
+                    android:background="@drawable/edit_text_bg"
+                    android:paddingHorizontal="12dp"/>
+
+                <ImageButton
+                    android:id="@+id/btnSearch"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="@drawable/bg_button_orange"
+                    android:src="@drawable/ic_search"
+                    android:layout_marginStart="8dp"
+                    app:tint="#FFFFFF" />
+            </LinearLayout>
+
+            <!-- Buat Postingan -->
+            <Button
+                android:id="@+id/btnBuatPostingan"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="Buat Postingan"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/bg_button_orange"
+                app:backgroundTint="@null"
+                android:layout_marginTop="12dp"/>
+
+        </LinearLayout>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/forumRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            android:layout_marginBottom="16dp" />
+
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>
