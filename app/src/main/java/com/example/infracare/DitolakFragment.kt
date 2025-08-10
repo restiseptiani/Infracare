@@ -11,7 +11,8 @@ import com.example.infracare.adapter.LaporanAdapter
 import com.example.infracare.model.Laporan
 import com.google.firebase.firestore.FirebaseFirestore
 
-class DiterimaFragment : Fragment() {
+
+class DitolakFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var laporanAdapter: LaporanAdapter
@@ -40,15 +41,15 @@ class DiterimaFragment : Fragment() {
         }
         recyclerView.adapter = laporanAdapter
 
-        fetchLaporanDiterima()
+        fetchLaporanDitolak()
 
         return view
     }
 
-    private fun fetchLaporanDiterima() {
+    private fun fetchLaporanDitolak() {
         val db = FirebaseFirestore.getInstance()
         db.collection("laporan")
-            .whereEqualTo("status", "Diterima")
+            .whereEqualTo("status", "Ditolak")
             .get()
             .addOnSuccessListener { documents ->
                 laporanList.clear()
@@ -67,7 +68,7 @@ class DiterimaFragment : Fragment() {
                 laporanAdapter.notifyDataSetChanged()
             }
             .addOnFailureListener { exception ->
-
+                // Bisa tambahkan log atau Toast di sini jika mau
             }
     }
 }

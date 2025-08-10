@@ -9,48 +9,65 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.infracare.adapter.LaporanAdapter
 import com.example.infracare.model.Laporan
+import com.google.firebase.firestore.FirebaseFirestore
 
 class DisposisiFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var laporanAdapter: LaporanAdapter
+    private val laporanList = mutableListOf<Laporan>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_laporan_list, container, false)
+
         recyclerView = view.findViewById(R.id.recyclerDiterima)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        val dummyData = listOf(
-            Laporan(
-                id = 5,
-                kategori = "PJU Rusak",
-                tanggal = "12-07-2025",
-                judul = "Lampu jalan rusak di depan SD Cibaduyut",
-                lokasi = "Gg. Bu Ilem No.128, Cibaduyut Wetan, Kec. Bojongloa Kidul, Kota Bandung, Jawa Barat 40238, Indonesia",
-                status = "Disposisi",
-                imageUrl = "https://multimedia.beritajakarta.id/photo/2014_508c75c8507a2ae5223dfd2faeb98122/5981b757b0197560271ed10541d2accd.jpg"
-            )
-        )
-
-        laporanAdapter = LaporanAdapter(dummyData) { selectedLaporan ->
+        laporanAdapter = LaporanAdapter(laporanList) { selectedLaporan ->
             val bundle = Bundle().apply {
                 putParcelable("laporan", selectedLaporan)
             }
-
             val detailFragment = DetailLaporanFragment().apply {
                 arguments = bundle
             }
-
             requireActivity().supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, detailFragment)
                 .addToBackStack(null)
                 .commit()
         }
-
         recyclerView.adapter = laporanAdapter
+
+        fetchLaporanDisposisi()
+
         return view
+    }
+
+    private fun fetchLaporanDisposisi() {
+        val db = FirebaseFirestore.getInstance()
+        db.collection("laporan")
+            .whereEqualTo("status", "Disposisi")
+            .get()
+            .addOnSuccessListener { documents ->
+                laporanList.clear()
+                for (document in documents) {
+                    val laporan = Laporan(
+                        id = document.id,
+                        kategori = document.getString("kategori") ?: "",
+                        tanggal = document.getString("tanggal") ?: "",
+                        judul = document.getString("judul") ?: "",
+                        lokasi = document.getString("lokasi") ?: "",
+                        status = document.getString("status") ?: "",
+                        imageUrl = document.getString("imageUrl") ?: ""
+                    )
+                    laporanList.add(laporan)
+                }
+                laporanAdapter.notifyDataSetChanged()
+            }
+            .addOnFailureListener { exception ->
+                // Optional: tambahkan log atau Toast jika mau
+            }
     }
 }

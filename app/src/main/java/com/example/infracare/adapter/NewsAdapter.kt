@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.infracare.R
 import com.example.infracare.model.NewsItem
+import com.google.firebase.Timestamp
 
 class NewsAdapter(private val newsList: List<NewsItem>) : RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
 
@@ -37,9 +38,12 @@ class NewsAdapter(private val newsList: List<NewsItem>) : RecyclerView.Adapter<N
 
     override fun getItemCount(): Int = newsList.size
 
-    private fun getTimeAgo(timestamp: Long): String {
+    private fun getTimeAgo(timestamp: Timestamp?): String {
+        if (timestamp == null) return "Tidak diketahui"
+
+        val timeInMillis = timestamp.toDate().time
         val now = System.currentTimeMillis()
-        val diff = now - timestamp
+        val diff = now - timeInMillis
 
         val seconds = diff / 1000
         val minutes = seconds / 60
@@ -52,6 +56,6 @@ class NewsAdapter(private val newsList: List<NewsItem>) : RecyclerView.Adapter<N
             hours < 24 -> "$hours jam yang lalu"
             else -> "$days hari yang lalu"
         }
-        }
+    }
 
 }

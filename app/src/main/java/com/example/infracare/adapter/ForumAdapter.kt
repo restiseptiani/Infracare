@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide
 import com.example.infracare.R
 import com.example.infracare.model.ForumPost
 
-class ForumAdapter(private val list: List<ForumPost>) :
+class ForumAdapter(private val list: MutableList<ForumPost>) :
     RecyclerView.Adapter<ForumAdapter.ForumViewHolder>() {
 
     inner class ForumViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -36,6 +36,7 @@ class ForumAdapter(private val list: List<ForumPost>) :
         holder.tvIsi.text = item.isi
         holder.tvKomentar.text = "${item.jumlahKomentar} Komentar"
 
+        // Tampilkan gambar postingan kalau ada
         if (item.urlGambar.isNullOrEmpty()) {
             holder.imgPost.visibility = View.GONE
         } else {
@@ -45,10 +46,17 @@ class ForumAdapter(private val list: List<ForumPost>) :
                 .into(holder.imgPost)
         }
 
+        // Load foto profil dummy
         Glide.with(holder.itemView.context)
             .load(R.drawable.pp)
             .into(holder.imgProfile)
     }
 
     override fun getItemCount(): Int = list.size
+
+    fun updateData(newList: List<ForumPost>) {
+        list.clear()
+        list.addAll(newList)
+        notifyDataSetChanged()
+    }
 }

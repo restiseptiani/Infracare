@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "718407862975",
+    "firebase_url": "https://jaga-baraya-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "jaga-baraya",
+    "storage_bucket": "jaga-baraya.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:718407862975:android:4d82d6fc3bf1e97151140a",
+        "android_client_info": {
+          "package_name": "com.example.infracare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "718407862975-ac1h5pa5d66o99daq2clh3igt9e7i41m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.infracare",
+            "certificate_hash": "ddd607f7b338b747ee7784082b3c0ea3570bf759"
+          }
+        },
+        {
+          "client_id": "718407862975-f2ol8vhtg1itt5rec3jumb4oe68h3ncc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRqmDpZvFDv6eExNPJJ9IS2l-rLgQwIxQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "718407862975-f2ol8vhtg1itt5rec3jumb4oe68h3ncc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

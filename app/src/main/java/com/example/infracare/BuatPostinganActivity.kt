@@ -1,27 +1,27 @@
 package com.example.infracare
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.DisplayMetrics
-import android.view.Gravity
+import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
+import com.bumptech.glide.Glide
 
 class BuatPostinganActivity : AppCompatActivity() {
 
+    private lateinit var btnBack: ImageView
+    private lateinit var btnKirim: Button
+    private lateinit var imgProfile: ImageView
+    private lateinit var tvName: TextView
     private lateinit var etJudul: EditText
     private lateinit var etDeskripsi: EditText
-    private lateinit var btnKirim: Button
-    private lateinit var btnBack: ImageView
-    private lateinit var iconTambah: ImageView
+    private lateinit var imgPreview: ImageView
+    private lateinit var icAdd: ImageView
+    private lateinit var progressBar: ProgressBar
 
     private val PICK_IMAGE_REQUEST = 1
     private var selectedImageUri: Uri? = null
@@ -30,102 +30,79 @@ class BuatPostinganActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_buat_postingan)
 
+        btnBack = findViewById(R.id.btnBack)
+        btnKirim = findViewById(R.id.btnKirim)
+        imgProfile = findViewById(R.id.imgProfile)
+        tvName = findViewById(R.id.tvName)
         etJudul = findViewById(R.id.etJudul)
         etDeskripsi = findViewById(R.id.etDeskripsi)
-        btnKirim = findViewById(R.id.btnKirim)
-        btnBack = findViewById(R.id.btnBack)
-        iconTambah = findViewById(R.id.ic_add)
-
-        val watcher = object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                val isFormValid = etJudul.text.toString().isNotEmpty() &&
-                        etDeskripsi.text.toString().isNotEmpty()
-                btnKirim.isEnabled = isFormValid
-                btnKirim.backgroundTintList = ContextCompat.getColorStateList(
-                    this@BuatPostinganActivity,
-                    if (isFormValid) R.color.secondary else R.color.grey
-                )
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-        }
-
-        etJudul.addTextChangedListener(watcher)
-        etDeskripsi.addTextChangedListener(watcher)
+        imgPreview = findViewById(R.id.imgPreview)
+        icAdd = findViewById(R.id.ic_add)
+        progressBar = findViewById(R.id.progressBar)
 
         btnBack.setOnClickListener {
             finish()
         }
 
-        iconTambah.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            intent.type = "image/*"
-            startActivityForResult(intent, PICK_IMAGE_REQUEST)
+        icAdd.setOnClickListener {
+            openGallery()
         }
 
-        btnKirim.setOnClickListener {
-            showConfirmationDialog(
-                title = "Kirimkan Postingan Ini?",
-                message = "Pilih Kirim Jika Postingan Sudah Sesuai,\nPilih Tinjau Ulang Jika Postingan \nBelum Sesuai"
-            ) {
-                // Kirim hasil ke fragment
-                val resultIntent = Intent()
-                resultIntent.putExtra("from_forum", true)
-                setResult(Activity.RESULT_OK, resultIntent)
-                finish()
-            }
-        }
-
+        etJudul.addTextChangedListener(SimpleTextWatcher { validateInputs() })
+        etDeskripsi.addTextChangedListener(SimpleTextWatcher { validateInputs() })
     }
 
-    private fun showConfirmationDialog(title: String, message: String, onConfirm: () -> Unit) {
-        val dialogView = layoutInflater.inflate(R.layout.dialog_konfirmasi, null)
+    private fun validateInputs() {
+        val isJudulValid = etJudul.text.toString().trim().isNotEmpty()
+        val isDeskripsiValid = etDeskripsi.text.toString().trim().isNotEmpty()
+        btnKirim.isEnabled = isJudulValid && isDeskripsiValid
+    }
 
-        val tvTitle = dialogView.findViewById<TextView>(R.id.tvTitle)
-        val tvMessage = dialogView.findViewById<TextView>(R.id.tvMessage)
-        val tvTinjauUlang = dialogView.findViewById<TextView>(R.id.tvTinjauUlang)
-        val tvKirim = dialogView.findViewById<TextView>(R.id.tvKirim)
-
-        tvTitle.text = title
-        tvMessage.text = message
-
-        val dialog = AlertDialog.Builder(this)
-            .setView(dialogView)
-            .setCancelable(false)
-            .create()
-
-        tvTinjauUlang.setOnClickListener {
-            dialog.dismiss()
-        }
-
-        tvKirim.setOnClickListener {
-            dialog.dismiss()
-            onConfirm()
-        }
-
-        dialog.setOnShowListener {
-            dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-
-            val metrics = DisplayMetrics()
-            windowManager.defaultDisplay.getMetrics(metrics)
-            val width = (metrics.widthPixels * 0.75).toInt()
-
-            dialog.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
-            dialog.window?.setGravity(Gravity.CENTER)
-            dialog.window?.attributes?.windowAnimations = R.style.DialogAnimation
-        }
-
-        dialog.show()
+    private fun openGallery() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(intent, PICK_IMAGE_REQUEST)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
-            selectedImageUri = data?.data
-            Toast.makeText(this, "Gambar berhasil dipilih", Toast.LENGTH_SHORT).show()
 
-            // TODO: tampilkan preview gambar jika dibutuhkan
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
+            selectedImageUri = data.data
+            selectedImageUri?.let {
+                imgPreview.visibility = View.VISIBLE
+                Glide.with(this).load(it).into(imgPreview)
+
+                // Atur ulang tinggi EditText agar sesuai isi
+                etDeskripsi.setMinHeight(0)
+                val params = etDeskripsi.layoutParams
+                params.height = ViewGroup.LayoutParams.WRAP_CONTENT
+                etDeskripsi.layoutParams = params
+                etDeskripsi.invalidate()
+                etDeskripsi.requestLayout()
+
+                // Hapus padding vertikal jika perlu
+                etDeskripsi.setPadding(
+                    etDeskripsi.paddingLeft,
+                    8,
+                    etDeskripsi.paddingRight,
+                    8
+                )
+
+                // Paksa resize berdasarkan isi baris
+                resizeEditTextToContent(etDeskripsi)
+            }
+        }
+    }
+
+    private fun resizeEditTextToContent(editText: EditText) {
+        editText.post {
+            val lineHeight = editText.lineHeight
+            val lines = editText.lineCount.coerceAtLeast(1) // minimal 1 baris
+            val targetHeight = lineHeight * lines + editText.paddingTop + editText.paddingBottom
+
+            val layoutParams = editText.layoutParams
+            layoutParams.height = targetHeight
+            editText.layoutParams = layoutParams
         }
     }
 }

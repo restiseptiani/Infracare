@@ -49,9 +49,10 @@ class LaporankuFragment : Fragment() {
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = when (position) {
                 0 -> "Diterima"
-                1 -> "Ditinjau"
-                2 -> "Ditangani"
-                else -> "Disposisi"
+                1 -> "Ditangani"
+                2 -> "Disposisi"
+                3 -> "Selesai"
+                else -> "Ditolak"
             }
         }.attach()
 

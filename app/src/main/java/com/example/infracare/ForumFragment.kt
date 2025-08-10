@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.infracare.adapter.ForumAdapter
 import com.example.infracare.databinding.FragmentForumBinding
 import com.example.infracare.model.ForumPost
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ListenerRegistration
 
 class ForumFragment : Fragment() {
 
@@ -23,6 +25,12 @@ class ForumFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val REQUEST_POST = 101
+
+    private val db = FirebaseFirestore.getInstance()
+    private var forumListener: ListenerRegistration? = null
+
+    private val forumAdapter = ForumAdapter(mutableListOf())
+    private var allPosts = mutableListOf<ForumPost>() // Data asli
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,56 +43,88 @@ class ForumFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Ubah warna icon ● menjadi warna secondary
-        val titleText = "●    Forum"
-        val spannable = SpannableString(titleText)
+        // Ubah warna ●
+        val spannable = SpannableString("●    Forum")
         val colorSecondary = ContextCompat.getColor(requireContext(), R.color.secondary)
-        spannable.setSpan(
-            ForegroundColorSpan(colorSecondary),
-            0,
-            1,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
+        spannable.setSpan(ForegroundColorSpan(colorSecondary), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         binding.root.findViewById<TextView>(R.id.forumTitleTextView).text = spannable
 
-        // Dummy data
-        val dummyData = listOf(
-            ForumPost(
-                1,
-                "Yor Forger",
-                "13 Nov 2024",
-                "Jakarta",
-                "Apa Teknologi Ramah Lingkungan yang Paling Berdampak Menurut Anda?",
-                "Dunia terus menciptakan teknologi baru untuk melawan perubahan iklim, seperti energi surya, mobil listrik, dan bangunan berkonsep hijau...",
-                "https://images.unsplash.com/photo-1603791440384-56cd371ee9a7",
-                15
-            ),
-            ForumPost(
-                2,
-                "Toji Fushiguro",
-                "11 Okt 2024",
-                "Lampung",
-                "Peran Energi Terbarukan dalam Menyelamatkan Planet Kita",
-                "Penggunaan energi terbarukan seperti matahari, angin, dan air menjadi kunci dalam mengurangi emisi karbon...",
-                null,
-                15
-            )
-        )
-
-        // Atur RecyclerView
+        // Setup RecyclerView
         binding.forumRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.forumRecyclerView.adapter = ForumAdapter(dummyData)
+        binding.forumRecyclerView.adapter = forumAdapter
 
-        // Aksi tombol "Buat Postingan"
+        // Ambil data
+        loadForumPosts()
+
+        // Tombol Buat Postingan
         binding.btnBuatPostingan.setOnClickListener {
             val intent = Intent(requireContext(), BuatPostinganActivity::class.java)
             startActivityForResult(intent, REQUEST_POST)
         }
+
+        // Search button click
+        binding.btnSearch.setOnClickListener {
+            val query = binding.searchEditText.text.toString().trim()
+            filterPosts(query)
+        }
+
+    }
+
+    private fun loadForumPosts() {
+        binding.forumProgressBar.visibility = View.VISIBLE
+        forumListener = db.collection("forum")
+            .addSnapshotListener { snapshots, e ->
+                binding.forumProgressBar.visibility = View.GONE
+                if (e != null) {
+                    // Log error kalau perlu
+                    return@addSnapshotListener
+                }
+
+                val posts = mutableListOf<ForumPost>()
+                snapshots?.forEach { doc ->
+                    val id = doc.id
+                    val nama = doc.getString("nama") ?: "Tidak diketahui"
+                    val tanggal = doc.getString("tanggal") ?: ""
+                    val lokasi = doc.getString("lokasi") ?: ""
+                    val judul = doc.getString("judul") ?: ""
+                    val isi = doc.getString("isi") ?: ""
+                    val urlGambar = doc.getString("urlGambar")
+                    val jumlahKomentar = doc.getLong("jumlahKomentar")?.toInt() ?: 0
+
+                    posts.add(
+                        ForumPost(
+                            id = id,
+                            nama = nama,
+                            tanggal = tanggal,
+                            lokasi = lokasi,
+                            judul = judul,
+                            isi = isi,
+                            urlGambar = urlGambar,
+                            jumlahKomentar = jumlahKomentar
+                        )
+                    )
+                }
+
+                allPosts = posts
+                forumAdapter.updateData(posts)
+            }
+    }
+
+    private fun filterPosts(query: String) {
+        val filtered = if (query.isEmpty()) {
+            allPosts
+        } else {
+            allPosts.filter { post ->
+                post.judul.contains(query, ignoreCase = true) ||
+                        post.isi.contains(query, ignoreCase = true) ||
+                        post.nama.contains(query, ignoreCase = true)
+            }
+        }
+        forumAdapter.updateData(filtered)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         if (requestCode == REQUEST_POST && resultCode == Activity.RESULT_OK) {
             val isFromForum = data?.getBooleanExtra("from_forum", false) == true
             if (isFromForum) {
@@ -95,6 +135,7 @@ class ForumFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        forumListener?.remove()
         _binding = null
     }
 }

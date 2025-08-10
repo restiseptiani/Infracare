@@ -51,8 +51,9 @@ class LaporanAdapter(
         holder.tvLihat.text = "Rincian Laporan"
 
         when (laporan.status) {
-            "Disposisi" -> holder.tvStatus.setBackgroundResource(R.drawable.chip_background_red)
-            "Diterima", "Ditinjau", "Ditangani" -> holder.tvStatus.setBackgroundResource(R.drawable.chip_background)
+            "Ditolak" -> holder.tvStatus.setBackgroundResource(R.drawable.chip_background_red)
+            "Disposisi","Diterima", "Ditangani" -> holder.tvStatus.setBackgroundResource(R.drawable.chip_background)
+            "Selesai" -> holder.tvStatus.setBackgroundResource(R.drawable.chip_background_green)
             else -> holder.tvStatus.setBackgroundResource(R.drawable.chip_background)
         }
     }
