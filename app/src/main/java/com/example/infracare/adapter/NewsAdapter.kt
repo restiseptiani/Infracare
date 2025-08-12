@@ -28,9 +28,9 @@ class NewsAdapter(private val newsList: List<NewsItem>) : RecyclerView.Adapter<N
 
     override fun onBindViewHolder(holder: NewsViewHolder, position: Int) {
         val news = newsList[position]
-        holder.title.text = news.title
-        holder.category.text = news.category
-        holder.source.text = news.source
+        holder.title.text = news.judul
+        holder.category.text = news.kategori
+        holder.source.text = news.sumber
         holder.time.text = getTimeAgo(news.timestamp)
         Glide.with(holder.itemView.context).load(news.imageUrl).into(holder.image)
     }

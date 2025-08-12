@@ -34,12 +34,12 @@ class CarouselAdapter(private val items: List<NewsItem>) :
         val context = viewHolder.itemView.context
 
         // Set judul dan gambar
-        viewHolder.title.text = item.title
+        viewHolder.title.text = item.judul
         Glide.with(context).load(item.imageUrl).into(viewHolder.image)
 
         // Set ikon kategori dan teks kategori
         viewHolder.categoryIcon.setImageResource(item.iconResId)
-        viewHolder.categoryText.text = item.category
+        viewHolder.categoryText.text = item.kategori
 
         // Hapus chip sebelumnya agar tidak dobel
         viewHolder.chipContainer.removeAllViews()

@@ -64,7 +64,7 @@ class SemuaFragment : Fragment() {
                 for (document in result) {
                     val item = document.toObject(NewsItem::class.java).copy(
                         id = document.id,
-                        iconResId = getIconResIdFromCategory(document.getString("category"))
+                        iconResId = getIconResIdFromCategory(document.getString("kategori"))
                     )
                     carouselItems.add(item)
                 }
@@ -101,7 +101,7 @@ class SemuaFragment : Fragment() {
                 for (document in result) {
                     val item = document.toObject(NewsItem::class.java).copy(
                         id = document.id,
-                        iconResId = getIconResIdFromCategory(document.getString("category"))
+                        iconResId = getIconResIdFromCategory(document.getString("kategori"))
                     )
                     newsItems.add(item)
                 }
@@ -113,8 +113,8 @@ class SemuaFragment : Fragment() {
     }
 
     // Fungsi mapping kategori ke icon
-    private fun getIconResIdFromCategory(category: String?): Int {
-        return when (category?.lowercase()) {
+    private fun getIconResIdFromCategory(kategori: String?): Int {
+        return when (kategori?.lowercase()) {
             "cuaca" -> R.drawable.ic_weather
             "transportasi" -> R.drawable.ic_transportation
             "publik" -> R.drawable.ic_public

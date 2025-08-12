@@ -5,11 +5,11 @@ import com.google.firebase.Timestamp
 
 data class NewsItem(
     var id: String = "",
-    val title: String = "",
+    val judul: String = "",
     val imageUrl: String = "",
-    val category: String = "",
+    val kategori: String = "",
     val tags: List<String> = listOf(),
     val iconResId: Int = R.drawable.ic_health,
-    val source: String = "",
+    val sumber: String = "",
     val timestamp: Timestamp? = null
 )

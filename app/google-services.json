@@ -1,42 +1,41 @@
 {
   "project_info": {
-    "project_number": "718407862975",
-    "firebase_url": "https://jaga-baraya-default-rtdb.asia-southeast1.firebasedatabase.app",
-    "project_id": "jaga-baraya",
-    "storage_bucket": "jaga-baraya.firebasestorage.app"
+    "project_number": "949996101685",
+    "project_id": "infracare-d7e85",
+    "storage_bucket": "infracare-d7e85.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:718407862975:android:4d82d6fc3bf1e97151140a",
+        "mobilesdk_app_id": "1:949996101685:android:6f8caefc426db1708f517c",
         "android_client_info": {
           "package_name": "com.example.infracare"
         }
       },
       "oauth_client": [
         {
-          "client_id": "718407862975-ac1h5pa5d66o99daq2clh3igt9e7i41m.apps.googleusercontent.com",
+          "client_id": "949996101685-fca20q1pufr0vr52ifmc868ernkifd2c.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.infracare",
-            "certificate_hash": "ddd607f7b338b747ee7784082b3c0ea3570bf759"
+            "certificate_hash": "4e1ca40d945e01bedf80f24006724196fb14e997"
           }
         },
         {
-          "client_id": "718407862975-f2ol8vhtg1itt5rec3jumb4oe68h3ncc.apps.googleusercontent.com",
+          "client_id": "949996101685-1t8lujpl61cau0j8fprc15bb96m3i9ev.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDRqmDpZvFDv6eExNPJJ9IS2l-rLgQwIxQ"
+          "current_key": "AIzaSyCmf8d_EePGEP32y2-oegue_UQKQQDzxnc"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "718407862975-f2ol8vhtg1itt5rec3jumb4oe68h3ncc.apps.googleusercontent.com",
+              "client_id": "949996101685-1t8lujpl61cau0j8fprc15bb96m3i9ev.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
