@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:paddingBottom="100dp">
 
+
         <ImageView
             android:id="@+id/iv_logo"
             android:layout_width="197dp"
@@ -71,6 +72,37 @@
             app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
+            android:id="@+id/tv_NIK"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:text="NIK"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/nameEditText" />
+
+        <EditText
+            android:id="@+id/nikEditText"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/edittext_background"
+            android:hint="Masukan NIK Anda"
+            android:inputType="text"
+            android:padding="8dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/grey"
+            android:textSize="12sp"
+            app:layout_constraintTop_toBottomOf="@id/tv_NIK"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
             android:id="@+id/tv_hp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -81,7 +113,7 @@
             android:text="@string/hp"
             android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/nameEditText" />
+            app:layout_constraintTop_toBottomOf="@id/nikEditText" />
 
         <EditText
             android:id="@+id/hpEditText"
@@ -211,7 +243,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
-            android:id="@+id/btn_login"
+            android:id="@+id/btn_daftar"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginStart="24dp"
@@ -224,65 +256,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- Garis & ATAU -->
-        <ImageView
-            android:id="@+id/iv_lineStart"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="24dp"
-            android:background="@color/white"
-            app:layout_constraintTop_toBottomOf="@id/btn_login"
-            app:layout_constraintEnd_toStartOf="@id/tv_atau"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/tv_atau"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:text="@string/atau"
-            android:textColor="@color/white"
-            app:layout_constraintTop_toBottomOf="@id/btn_login"
-            app:layout_constraintStart_toEndOf="@id/iv_lineStart"
-            app:layout_constraintEnd_toStartOf="@id/iv_lineEnd" />
-
-        <ImageView
-            android:id="@+id/iv_lineEnd"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginTop="24dp"
-            android:background="@color/white"
-            app:layout_constraintTop_toBottomOf="@id/btn_login"
-            app:layout_constraintStart_toEndOf="@id/tv_atau"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <!-- Tombol Google -->
-        <Button
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
-            android:id="@+id/btn_google"
-            android:layout_width="match_parent"
-            android:layout_height="46dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginTop="12dp"
-            app:icon="@drawable/ic_google"
-            app:iconGravity="textStart"
-            app:iconPadding="8dp"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            app:iconTint="@null"
-            android:text="Daftar dengan Google"
-            android:textColor="@color/white"
-            app:strokeColor="@color/white"
-            app:strokeWidth="1dp"
-            app:cornerRadius="8dp"
-            app:layout_constraintTop_toBottomOf="@id/tv_atau"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-
         <TextView
             android:id="@+id/tv_sdh"
             android:layout_width="wrap_content"
@@ -290,7 +263,7 @@
             android:text="@string/sdh"
             android:textColor="@color/white"
             android:layout_marginTop="24dp"
-            app:layout_constraintTop_toBottomOf="@id/btn_google"
+            app:layout_constraintTop_toBottomOf="@id/btn_daftar"
             app:layout_constraintEnd_toStartOf="@id/tv_Masuk"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintHorizontal_chainStyle="packed" />
@@ -303,10 +276,19 @@
             android:layout_marginTop="24dp"
             android:text="@string/masuk"
             android:textColor="@color/secondary"
-            app:layout_constraintTop_toBottomOf="@id/btn_google"
+            app:layout_constraintTop_toBottomOf="@id/btn_daftar"
             app:layout_constraintStart_toEndOf="@id/tv_sdh"
             app:layout_constraintEnd_toEndOf="parent" />
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

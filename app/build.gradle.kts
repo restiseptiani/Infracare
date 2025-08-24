@@ -21,6 +21,14 @@ android {
         vectorDrawables.useSupportLibrary = true
     }
 
+    packaging {
+        resources {
+            excludes += "META-INF/LICENSE.md"
+            excludes += "META-INF/LICENSE-notice.md"
+            excludes += "META-INF/NOTICE.md"
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -108,5 +116,8 @@ dependencies {
     //cloudinary
     implementation("com.cloudinary:cloudinary-android:2.3.1")
 
+    //email verification
+    implementation("com.sun.mail:android-mail:1.6.7")
+    implementation("com.sun.mail:android-activation:1.6.7")
 
 }
