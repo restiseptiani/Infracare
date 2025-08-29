@@ -116,7 +116,14 @@ class FormLaporanActivity : AppCompatActivity() {
             }
         }
 
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, rtRwList)
+        // Custom adapter pakai layout XML
+        val adapter = ArrayAdapter(
+            this,
+            R.layout.spinner_item,          // item yang dipilih (warna putih)
+            rtRwList
+        )
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item) // dropdown (warna hitam)
+
         spinnerRTRW.adapter = adapter
 
         spinnerRTRW.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -134,6 +141,7 @@ class FormLaporanActivity : AppCompatActivity() {
             }
         }
     }
+
 
     private fun showConfirmationDialog() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_konfirmasi, null)
@@ -222,11 +230,17 @@ class FormLaporanActivity : AppCompatActivity() {
 
     private fun saveLaporanToFirestore(imageUrl: String) {
         val db = FirebaseFirestore.getInstance()
+
+        // Pisahkan RW & RT dari string selectedRTRW
+        val rw = selectedRTRW?.substringAfter("RW ")?.substringBefore(" -") ?: ""
+        val rt = selectedRTRW?.substringAfter("RT ") ?: ""
+
         val laporan = hashMapOf(
             "judul" to edtJudul.text.toString(),
             "deskripsi" to edtDeskripsi.text.toString(),
             "lokasi" to edtLokasi.text.toString(),
-            "rtrw" to selectedRTRW,
+            "rw" to rw,   // simpan RW pisah
+            "rt" to rt,   // simpan RT pisah
             "status" to "Diterima",
             "tanggal" to getTodayDate(),
             "imageUrl" to imageUrl

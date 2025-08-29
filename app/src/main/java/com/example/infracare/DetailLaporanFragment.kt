@@ -26,7 +26,7 @@ class DetailLaporanFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_detail_laporan, container, false)
 
         view.findViewById<TextView>(R.id.tvJudul).text = laporan.judul
-        view.findViewById<TextView>(R.id.tvDeskripsi).text = laporan.kategori
+        view.findViewById<TextView>(R.id.tvDeskripsi).text = laporan.deskripsi
         view.findViewById<TextView>(R.id.tvLokasi).text = laporan.lokasi
         view.findViewById<TextView>(R.id.tvStatus).text = laporan.status
         view.findViewById<TextView>(R.id.tvTanggalDibuat).text = laporan.tanggal

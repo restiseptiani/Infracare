@@ -56,7 +56,7 @@ class DitolakFragment : Fragment() {
                 for (document in documents) {
                     val laporan = Laporan(
                         id = document.id,
-                        kategori = document.getString("kategori") ?: "",
+                        deskripsi = document.getString("deskripsi") ?: "",
                         tanggal = document.getString("tanggal") ?: "",
                         judul = document.getString("judul") ?: "",
                         lokasi = document.getString("lokasi") ?: "",

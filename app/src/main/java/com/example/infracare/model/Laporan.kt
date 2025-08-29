@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Laporan(
     var id: String = "",
-    val kategori: String = "",
+    val deskripsi: String = "",
     val tanggal: String = "",
     val judul: String = "",
     val lokasi: String = "",

@@ -28,7 +28,7 @@ class LaporanAdapter(
             itemView.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    onItemClick(list[position]) // ✅ Panggil callback saat diklik
+                    onItemClick(list[position])
                 }
             }
         }
@@ -42,7 +42,7 @@ class LaporanAdapter(
     override fun onBindViewHolder(holder: LaporanViewHolder, position: Int) {
         val laporan = list[position]
 
-        holder.tvKategori.text = laporan.kategori
+        holder.tvKategori.text = "Infrastruktur"
         holder.tvTanggal.text = laporan.tanggal
         Glide.with(holder.itemView.context).load(laporan.imageUrl).into(holder.image)
         holder.tvJudul.text = laporan.judul
