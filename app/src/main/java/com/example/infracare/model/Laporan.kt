@@ -11,6 +11,7 @@ data class Laporan(
     val judul: String = "",
     val lokasi: String = "",
     val status: String = "",
-    val imageUrl: String = ""
+    val imageUrl: String = "",
+    val rw: String = "",
+    val rt: String = ""
 ) : Parcelable
-

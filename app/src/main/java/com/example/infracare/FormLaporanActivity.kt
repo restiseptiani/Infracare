@@ -17,23 +17,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
-import com.cloudinary.Cloudinary
-import com.cloudinary.utils.ObjectUtils
-import com.example.infracare.api.CloudinaryApiService
 import com.example.infracare.network.RetrofitClient
 import com.google.android.gms.location.*
 import com.google.firebase.firestore.FirebaseFirestore
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import okhttp3.ResponseBody
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.text.SimpleDateFormat
 import java.util.*
 
 class FormLaporanActivity : AppCompatActivity() {
@@ -47,9 +39,11 @@ class FormLaporanActivity : AppCompatActivity() {
     private lateinit var locationCallback: LocationCallback
     private lateinit var scrollView: NestedScrollView
     private lateinit var progressBar: ProgressBar
+    private lateinit var spinnerRTRW: Spinner
 
     private val LOCATION_PERMISSION_CODE = 100
     private var imageUriString: String? = null
+    private var selectedRTRW: String? = null
 
     private val cloudName = "dzofhsgzp"
     private val uploadPreset = "infracare"
@@ -65,12 +59,13 @@ class FormLaporanActivity : AppCompatActivity() {
         btnKonfirmasi = findViewById(R.id.btnKonfirmasi)
         scrollView = findViewById(R.id.scrollView)
         progressBar = findViewById(R.id.progressBar)
+        spinnerRTRW = findViewById(R.id.spinnerRTRW)
 
+        // isi gambar
         imageUriString = intent.getStringExtra("image_uri")
-        imageUriString?.let {
-            imageView.setImageURI(Uri.parse(it))
-        }
+        imageUriString?.let { imageView.setImageURI(Uri.parse(it)) }
 
+        // auto scroll ke input aktif
         val scrollToFocusedView = View.OnFocusChangeListener { view, hasFocus ->
             if (hasFocus) scrollView.postDelayed({ scrollView.smoothScrollTo(0, view.top) }, 200)
         }
@@ -78,6 +73,7 @@ class FormLaporanActivity : AppCompatActivity() {
         edtDeskripsi.onFocusChangeListener = scrollToFocusedView
         edtLokasi.onFocusChangeListener = scrollToFocusedView
 
+        // location
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         if (checkLocationPermission()) requestNewLocation()
         else ActivityCompat.requestPermissions(
@@ -86,13 +82,56 @@ class FormLaporanActivity : AppCompatActivity() {
             LOCATION_PERMISSION_CODE
         )
 
+        // isi spinner RT/RW
+        setupSpinnerRTRW()
+
+        // tombol konfirmasi
         btnKonfirmasi.setOnClickListener {
             val judul = edtJudul.text.toString().trim()
             val deskripsi = edtDeskripsi.text.toString().trim()
             val lokasi = edtLokasi.text.toString().trim()
-            if (judul.isEmpty() || deskripsi.isEmpty() || lokasi.isEmpty()) {
+            val rtrw = selectedRTRW
+
+            if (judul.isEmpty() || deskripsi.isEmpty() || lokasi.isEmpty() || rtrw.isNullOrEmpty()) {
                 Toast.makeText(this, "Harap lengkapi semua form", Toast.LENGTH_SHORT).show()
-            } else showConfirmationDialog()
+            } else {
+                showConfirmationDialog()
+            }
+        }
+    }
+
+    private fun setupSpinnerRTRW() {
+        val rtRwList = mutableListOf<String>()
+
+        // RW 1 - 6 ada 4 RT
+        for (rw in 1..6) {
+            for (rt in 1..4) {
+                rtRwList.add("RW $rw - RT $rt")
+            }
+        }
+        // RW 7 - 8 ada 3 RT
+        for (rw in 7..8) {
+            for (rt in 1..3) {
+                rtRwList.add("RW $rw - RT $rt")
+            }
+        }
+
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, rtRwList)
+        spinnerRTRW.adapter = adapter
+
+        spinnerRTRW.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                selectedRTRW = rtRwList[position]
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                selectedRTRW = null
+            }
         }
     }
 
@@ -130,84 +169,64 @@ class FormLaporanActivity : AppCompatActivity() {
         Log.d("UPLOAD", "Start upload process, imageUriString=$imageUriString")
 
         try {
-            // Baca gambar dan decode ke Bitmap
             val inputStream = contentResolver.openInputStream(Uri.parse(imageUriString))
             val bitmap = android.graphics.BitmapFactory.decodeStream(inputStream)
             inputStream?.close()
 
             if (bitmap != null) {
-                // Kompres bitmap ke JPEG quality 80
                 val outputStream = java.io.ByteArrayOutputStream()
                 bitmap.compress(android.graphics.Bitmap.CompressFormat.JPEG, 70, outputStream)
                 val compressedBytes = outputStream.toByteArray()
                 outputStream.close()
 
-                Log.d("UPLOAD", "Image compressed, size=${compressedBytes.size} bytes")
-
-                // Buat request body
                 val requestFile = compressedBytes.toRequestBody("image/jpeg".toMediaTypeOrNull())
                 val body = MultipartBody.Part.createFormData("file", "upload.jpg", requestFile)
 
                 val service = RetrofitClient.instance.create(com.example.infracare.api.CloudinaryApiService::class.java)
-                Log.d("UPLOAD", "Created retrofit service, starting call...")
-
                 val call = service.uploadImage(cloudName, uploadPreset, body)
 
-                call.enqueue(object : retrofit2.Callback<okhttp3.ResponseBody> {
-                    override fun onResponse(call: retrofit2.Call<okhttp3.ResponseBody>, response: retrofit2.Response<okhttp3.ResponseBody>) {
+                call.enqueue(object : Callback<okhttp3.ResponseBody> {
+                    override fun onResponse(call: Call<okhttp3.ResponseBody>, response: Response<okhttp3.ResponseBody>) {
                         showLoading(false)
-                        Log.d("UPLOAD", "Response received, isSuccessful=${response.isSuccessful}")
-
                         if (response.isSuccessful) {
                             val responseBody = response.body()?.string()
-                            Log.d("UPLOAD", "Response body: $responseBody")
-
                             try {
                                 val json = org.json.JSONObject(responseBody ?: "")
                                 val imageUrl = json.getString("secure_url")
-                                Log.d("UPLOAD", "Image uploaded successfully, imageUrl=$imageUrl")
                                 saveLaporanToFirestore(imageUrl)
                             } catch (e: Exception) {
-                                Log.e("UPLOAD", "JSON parsing error: ${e.message}")
                                 Toast.makeText(this@FormLaporanActivity, "Parsing error: ${e.message}", Toast.LENGTH_SHORT).show()
                             }
                         } else {
                             val errorMsg = response.errorBody()?.string()
-                            Log.e("UPLOAD", "Upload failed, code=${response.code()}, error=$errorMsg")
                             Toast.makeText(this@FormLaporanActivity, "Upload gagal: $errorMsg", Toast.LENGTH_SHORT).show()
                         }
                     }
 
-                    override fun onFailure(call: retrofit2.Call<okhttp3.ResponseBody>, t: Throwable) {
+                    override fun onFailure(call: Call<okhttp3.ResponseBody>, t: Throwable) {
                         showLoading(false)
-                        Log.e("UPLOAD", "Network failure: ${t.message}", t)
                         Toast.makeText(this@FormLaporanActivity, "Upload gagal: ${t.message}", Toast.LENGTH_SHORT).show()
                     }
                 })
 
             } else {
                 showLoading(false)
-                Log.e("UPLOAD", "Failed to decode bitmap from uri")
                 Toast.makeText(this, "Gagal membaca gambar", Toast.LENGTH_SHORT).show()
             }
 
         } catch (e: Exception) {
             showLoading(false)
-            Log.e("UPLOAD", "Exception: ${e.message}", e)
-            e.printStackTrace()
             Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
         }
     }
-
-
-
 
     private fun saveLaporanToFirestore(imageUrl: String) {
         val db = FirebaseFirestore.getInstance()
         val laporan = hashMapOf(
             "judul" to edtJudul.text.toString(),
-            "kategori" to edtDeskripsi.text.toString(),
+            "deskripsi" to edtDeskripsi.text.toString(),
             "lokasi" to edtLokasi.text.toString(),
+            "rtrw" to selectedRTRW,
             "status" to "Diterima",
             "tanggal" to getTodayDate(),
             "imageUrl" to imageUrl

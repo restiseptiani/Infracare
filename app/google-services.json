@@ -1,44 +1,26 @@
 {
   "project_info": {
-    "project_number": "949996101685",
-    "project_id": "infracare-d7e85",
-    "storage_bucket": "infracare-d7e85.firebasestorage.app"
+    "project_number": "543192558676",
+    "project_id": "infracare-b08d6",
+    "storage_bucket": "infracare-b08d6.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:949996101685:android:6f8caefc426db1708f517c",
+        "mobilesdk_app_id": "1:543192558676:android:e0e7fd018fcf774c5451c1",
         "android_client_info": {
           "package_name": "com.example.infracare"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "949996101685-fca20q1pufr0vr52ifmc868ernkifd2c.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.infracare",
-            "certificate_hash": "4e1ca40d945e01bedf80f24006724196fb14e997"
-          }
-        },
-        {
-          "client_id": "949996101685-1t8lujpl61cau0j8fprc15bb96m3i9ev.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCmf8d_EePGEP32y2-oegue_UQKQQDzxnc"
+          "current_key": "AIzaSyAKnNB3eLGyJAzLMKjlCwxFjx62jIRZI_k"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "949996101685-1t8lujpl61cau0j8fprc15bb96m3i9ev.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }
