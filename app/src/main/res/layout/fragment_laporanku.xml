@@ -33,16 +33,15 @@
                 android:textSize="16sp" />
 
             <!-- Foto Profil -->
-            <ImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/profileImage"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:src="@drawable/pp"
+                android:layout_marginStart="8dp"
                 android:scaleType="centerCrop"
-                android:background="@drawable/circle_background"
-                android:clipToOutline="true"
-                android:padding="2dp"
-                android:layout_marginStart="8dp" />
+                app:shapeAppearanceOverlay="@style/CircleImageView"
+                app:strokeColor="@color/white"
+                app:strokeWidth="2dp"/>
         </LinearLayout>
 
         <!-- TabLayout -->

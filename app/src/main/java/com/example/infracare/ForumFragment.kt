@@ -9,10 +9,12 @@ import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.infracare.adapter.ForumAdapter
 import com.example.infracare.databinding.FragmentForumBinding
 import com.example.infracare.model.ForumPost
@@ -23,6 +25,7 @@ class ForumFragment : Fragment() {
 
     private var _binding: FragmentForumBinding? = null
     private val binding get() = _binding!!
+    private lateinit var ivProfile: ImageView
 
     private val REQUEST_POST = 101
 
@@ -37,6 +40,20 @@ class ForumFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentForumBinding.inflate(inflater, container, false)
+        ivProfile = binding.profileImage
+        val sharedPref = requireContext().getSharedPreferences("UserSession", android.content.Context.MODE_PRIVATE)
+        val fotoProfil = sharedPref.getString("fotoProfil", "")
+
+        if (!fotoProfil.isNullOrEmpty()) {
+            android.util.Log.d("Forum", "Foto profil dari SharedPref: $fotoProfil")
+            Glide.with(requireContext())
+                .load(fotoProfil)
+                .placeholder(R.drawable.pp)
+                .error(R.drawable.pp)
+                .into(ivProfile)
+        } else {
+            ivProfile.setImageResource(R.drawable.pp)
+        }
         return binding.root
     }
 
@@ -90,6 +107,7 @@ class ForumFragment : Fragment() {
                     val isi = doc.getString("isi") ?: ""
                     val urlGambar = doc.getString("urlGambar")
                     val jumlahKomentar = doc.getLong("jumlahKomentar")?.toInt() ?: 0
+                    val fotoProfil =doc.getString("fotoProfil")?:""
 
                     posts.add(
                         ForumPost(
@@ -100,7 +118,8 @@ class ForumFragment : Fragment() {
                             judul = judul,
                             isi = isi,
                             urlGambar = urlGambar,
-                            jumlahKomentar = jumlahKomentar
+                            jumlahKomentar = jumlahKomentar,
+                            fotoProfil = fotoProfil
                         )
                     )
                 }
@@ -117,7 +136,7 @@ class ForumFragment : Fragment() {
             allPosts.filter { post ->
                 post.judul.contains(query, ignoreCase = true) ||
                         post.isi.contains(query, ignoreCase = true) ||
-                        post.nama.contains(query, ignoreCase = true)
+                        post.nama!!.contains(query, ignoreCase = true)
             }
         }
         forumAdapter.updateData(filtered)

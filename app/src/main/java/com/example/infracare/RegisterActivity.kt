@@ -10,6 +10,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.google.firebase.firestore.FirebaseFirestore
+import java.net.URLEncoder
 import kotlin.random.Random
 
 class RegisterActivity : AppCompatActivity() {
@@ -180,7 +181,9 @@ class RegisterActivity : AppCompatActivity() {
 
             val email = etEmail.text.toString().trim()
             val otp = Random.nextInt(1000, 9999).toString()
+            val namaLengkap = etNamaLengkap.text.toString().trim()
 
+            val avatarUrl = generateAvatarUrl(namaLengkap)
             sendOtpEmail(email, otp) { success ->
                 if (success) {
                     val intent = Intent(this, VerificationActivity::class.java)
@@ -190,6 +193,7 @@ class RegisterActivity : AppCompatActivity() {
                     intent.putExtra("nama", etNamaLengkap.text.toString().trim())
                     intent.putExtra("noHp", etNoTelepon.text.toString().trim())
                     intent.putExtra("password", etPassword.text.toString().trim())
+                    intent.putExtra("fotoProfil", avatarUrl)
                     startActivity(intent)
                     finish()
                 } else {
@@ -262,3 +266,10 @@ class RegisterActivity : AppCompatActivity() {
         }.start()
     }
 }
+
+    private fun generateAvatarUrl(namaUser: String): String {
+        val encodedName = URLEncoder.encode(namaUser.trim(), "UTF-8")
+        return "https://ui-avatars.com/api/?" +
+                "name=$encodedName" +
+                "&background=random&color=fff&size=256&format=png"
+    }

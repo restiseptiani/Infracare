@@ -38,15 +38,16 @@
         </LinearLayout>
 
         <!-- Profile Picture -->
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/profileImage"
+            android:layout_marginStart="8dp"
+            app:shapeAppearanceOverlay="@style/CircleImageView"
+            app:strokeColor="@color/white"
+            app:strokeWidth="2dp"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_marginTop="32dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/pp"
-            android:background="@drawable/circle_background"
-            android:clipToOutline="true" />
+            android:scaleType="centerCrop"/>
 
         <!-- Name -->
         <TextView

@@ -47,27 +47,38 @@ class DiterimaFragment : Fragment() {
 
     private fun fetchLaporanDiterima() {
         val db = FirebaseFirestore.getInstance()
-        db.collection("laporan")
-            .whereEqualTo("status", "Diterima")
-            .get()
-            .addOnSuccessListener { documents ->
-                laporanList.clear()
-                for (document in documents) {
-                    val laporan = Laporan(
-                        id = document.id,
-                        deskripsi = document.getString("deskripsi") ?: "",
-                        tanggal = document.getString("tanggal") ?: "",
-                        judul = document.getString("judul") ?: "",
-                        lokasi = document.getString("lokasi") ?: "",
-                        status = document.getString("status") ?: "",
-                        imageUrl = document.getString("imageUrl") ?: ""
-                    )
-                    laporanList.add(laporan)
-                }
-                laporanAdapter.notifyDataSetChanged()
-            }
-            .addOnFailureListener { exception ->
 
-            }
+        // Ambil NIK user dari SharedPreferences
+        val sharedPref = requireActivity().getSharedPreferences(
+            "UserSession",
+            android.content.Context.MODE_PRIVATE
+        )
+        val nikUser = sharedPref.getString("nik", null)
+
+        if (nikUser != null) {
+            db.collection("laporan")
+                .whereEqualTo("status", "Diterima")
+                .whereEqualTo("nik", nikUser) // ✅ hanya ambil laporan dari user login
+                .get()
+                .addOnSuccessListener { documents ->
+                    laporanList.clear()
+                    for (document in documents) {
+                        val laporan = Laporan(
+                            id = document.id,
+                            deskripsi = document.getString("deskripsi") ?: "",
+                            tanggal = document.getString("tanggal") ?: "",
+                            judul = document.getString("judul") ?: "",
+                            lokasi = document.getString("lokasi") ?: "",
+                            status = document.getString("status") ?: "",
+                            imageUrl = document.getString("imageUrl") ?: ""
+                        )
+                        laporanList.add(laporan)
+                    }
+                    laporanAdapter.notifyDataSetChanged()
+                }
+                .addOnFailureListener { exception ->
+
+                }
+        }
     }
 }

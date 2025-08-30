@@ -10,7 +10,8 @@ import com.bumptech.glide.Glide
 import com.example.infracare.R
 import com.example.infracare.model.ForumPost
 
-class ForumAdapter(private val list: MutableList<ForumPost>) :
+class ForumAdapter(
+    private val list: MutableList<ForumPost>) :
     RecyclerView.Adapter<ForumAdapter.ForumViewHolder>() {
 
     inner class ForumViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -30,11 +31,18 @@ class ForumAdapter(private val list: MutableList<ForumPost>) :
 
     override fun onBindViewHolder(holder: ForumViewHolder, position: Int) {
         val item = list[position]
+        android.util.Log.d("ForumAdapter", "Bind item: nama=${item.nama}, fotoProfil=${item.fotoProfil}")
         holder.tvNama.text = item.nama
         holder.tvTanggalLokasi.text = "${item.tanggal}, ${item.lokasi}"
         holder.tvJudul.text = item.judul
         holder.tvIsi.text = item.isi
         holder.tvKomentar.text = "${item.jumlahKomentar} Komentar"
+        Glide.with(holder.itemView.context)
+            .load(item.fotoProfil)
+            .placeholder(R.drawable.pp)
+            .error(R.drawable.pp)
+            .circleCrop()
+            .into(holder.imgProfile)
 
         // Tampilkan gambar postingan kalau ada
         if (item.urlGambar.isNullOrEmpty()) {
@@ -46,11 +54,8 @@ class ForumAdapter(private val list: MutableList<ForumPost>) :
                 .into(holder.imgPost)
         }
 
-        // Load foto profil dummy
-        Glide.with(holder.itemView.context)
-            .load(R.drawable.pp)
-            .into(holder.imgProfile)
     }
+
 
     override fun getItemCount(): Int = list.size
 

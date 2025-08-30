@@ -11,6 +11,7 @@ import android.view.*
 import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 
 class ProfileFragment : Fragment() {
 
@@ -24,11 +25,26 @@ class ProfileFragment : Fragment() {
         val profileEmail = view.findViewById<TextView>(R.id.profileEmail)
         val btnLogout = view.findViewById<Button>(R.id.btnLogout)
         val layoutBahasa = view.findViewById<LinearLayout>(R.id.layoutBahasa)
+        val ivProfile = view.findViewById<ImageView>(R.id.profileImage)
 
+        val sharedPref = requireContext().getSharedPreferences("UserSession", android.content.Context.MODE_PRIVATE)
+        val namaLengkap = sharedPref.getString("namaLengkap", "User")
+        val fotoProfil = sharedPref.getString("fotoProfil", "")
+        val email = sharedPref.getString("email","")
         // Dummy data
-        profileName.text = "RESIANA"
-        profileEmail.text = "resiana789@gmail.com"
+        profileName.text = "$namaLengkap"
+        profileEmail.text = "$email"
 
+        if (!fotoProfil.isNullOrEmpty()) {
+            android.util.Log.d("HomeFragment", "Foto profil dari SharedPref: $fotoProfil")
+            Glide.with(requireContext())
+                .load(fotoProfil)
+                .placeholder(R.drawable.pp)
+                .error(R.drawable.pp)
+                .into(ivProfile)
+        } else {
+            ivProfile.setImageResource(R.drawable.pp)
+        }
         // Atur judul dengan simbol ● berwarna secondary
         val tvTitle = view.findViewById<TextView>(R.id.tvTitle)
         val fullText = "●    Profile"

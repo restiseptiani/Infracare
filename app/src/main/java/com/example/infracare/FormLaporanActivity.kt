@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
+import com.bumptech.glide.Glide
 import com.example.infracare.network.RetrofitClient
 import com.google.android.gms.location.*
 import com.google.firebase.firestore.FirebaseFirestore
@@ -40,6 +41,7 @@ class FormLaporanActivity : AppCompatActivity() {
     private lateinit var scrollView: NestedScrollView
     private lateinit var progressBar: ProgressBar
     private lateinit var spinnerRTRW: Spinner
+    private lateinit var ivProfile: ImageView
 
     private val LOCATION_PERMISSION_CODE = 100
     private var imageUriString: String? = null
@@ -60,6 +62,10 @@ class FormLaporanActivity : AppCompatActivity() {
         scrollView = findViewById(R.id.scrollView)
         progressBar = findViewById(R.id.progressBar)
         spinnerRTRW = findViewById(R.id.spinnerRTRW)
+        ivProfile = findViewById(R.id.profileImage)
+
+        val sharedPref = getSharedPreferences("UserSession", MODE_PRIVATE)
+        val fotoProfil = sharedPref.getString("fotoProfil", "")
 
         // isi gambar
         imageUriString = intent.getStringExtra("image_uri")
@@ -84,6 +90,17 @@ class FormLaporanActivity : AppCompatActivity() {
 
         // isi spinner RT/RW
         setupSpinnerRTRW()
+
+        if (!fotoProfil.isNullOrEmpty()) {
+            android.util.Log.d("HomeFragment", "Foto profil dari SharedPref: $fotoProfil")
+            Glide.with(this)
+                .load(fotoProfil)
+                .placeholder(R.drawable.pp)
+                .error(R.drawable.pp)
+                .into(ivProfile)
+        } else {
+            ivProfile.setImageResource(R.drawable.pp)
+        }
 
         // tombol konfirmasi
         btnKonfirmasi.setOnClickListener {
@@ -231,6 +248,16 @@ class FormLaporanActivity : AppCompatActivity() {
     private fun saveLaporanToFirestore(imageUrl: String) {
         val db = FirebaseFirestore.getInstance()
 
+        // Ambil data user dari SharedPreferences
+        val session = getSharedPreferences("UserSession", MODE_PRIVATE)
+        val currentNik = session.getString("nik", null)
+        val currentNama = session.getString("namaLengkap", null)
+
+        if (currentNik == null || currentNama == null) {
+            Toast.makeText(this, "Gagal: data user tidak lengkap", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         // Pisahkan RW & RT dari string selectedRTRW
         val rw = selectedRTRW?.substringAfter("RW ")?.substringBefore(" -") ?: ""
         val rt = selectedRTRW?.substringAfter("RT ") ?: ""
@@ -239,11 +266,13 @@ class FormLaporanActivity : AppCompatActivity() {
             "judul" to edtJudul.text.toString(),
             "deskripsi" to edtDeskripsi.text.toString(),
             "lokasi" to edtLokasi.text.toString(),
-            "rw" to rw,   // simpan RW pisah
-            "rt" to rt,   // simpan RT pisah
+            "rw" to rw,
+            "rt" to rt,
             "status" to "Diterima",
             "tanggal" to getTodayDate(),
-            "imageUrl" to imageUrl
+            "imageUrl" to imageUrl,
+            "nik" to currentNik,
+            "nama" to currentNama
         )
 
         db.collection("laporan")
@@ -261,6 +290,8 @@ class FormLaporanActivity : AppCompatActivity() {
                 Toast.makeText(this, "Gagal simpan: ${it.message}", Toast.LENGTH_SHORT).show()
             }
     }
+
+
 
     private fun getTodayDate(): String {
         val c = Calendar.getInstance()

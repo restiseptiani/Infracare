@@ -42,6 +42,8 @@ class BuatPostinganActivity : AppCompatActivity() {
     private lateinit var iconTambah: ImageView
     private lateinit var imgPreview: ImageView
     private lateinit var progressBar: ProgressBar
+    private lateinit var ivProfile: ImageView
+    private lateinit var tvName: TextView
 
     private var selectedImageUri: Uri? = null
     private lateinit var pickImageLauncher: ActivityResultLauncher<Intent>
@@ -62,7 +64,25 @@ class BuatPostinganActivity : AppCompatActivity() {
         iconTambah = findViewById(R.id.ic_add)
         imgPreview = findViewById(R.id.imgPreview)
         progressBar = findViewById(R.id.progressBar)
+        ivProfile = findViewById(R.id.profileImage)
+        tvName = findViewById(R.id.tvName)
 
+        val sharedPref = getSharedPreferences("UserSession", MODE_PRIVATE)
+        val namaLengkap = sharedPref.getString("namaLengkap","User")
+        val fotoProfil = sharedPref.getString("fotoProfil", "")
+
+        if (!fotoProfil.isNullOrEmpty()) {
+            android.util.Log.d("HomeFragment", "Foto profil dari SharedPref: $fotoProfil")
+            Glide.with(this)
+                .load(fotoProfil)
+                .placeholder(R.drawable.pp)
+                .error(R.drawable.pp)
+                .into(ivProfile)
+        } else {
+            ivProfile.setImageResource(R.drawable.pp)
+        }
+
+        tvName.text="$namaLengkap"
         // launcher pilih gambar
         pickImageLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
@@ -142,18 +162,20 @@ class BuatPostinganActivity : AppCompatActivity() {
         val judul = etJudul.text.toString()
         val isi = etDeskripsi.text.toString()
         val tanggal = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(Date())
-        val dummyNama = "Resiana"
-        val dummyFotoProfil = "pp.jpg"
+        val sharedPref = getSharedPreferences("UserSession", MODE_PRIVATE)
+        val namaLengkap = sharedPref.getString("namaLengkap", "User") ?: "User"
+        val nik = sharedPref.getString("nik", "nik") ?: ""
+        val fotoProfil = sharedPref.getString("fotoProfil", "") ?: ""
         val jumlahKomentar = 0
 
         progressBar.visibility = View.VISIBLE
 
         if (selectedImageUri != null) {
             compressAndUploadImage(selectedImageUri!!) { imageUrl ->
-                savePostToFirestore(judul, isi, tanggal, dummyNama, dummyFotoProfil, jumlahKomentar, imageUrl)
+                savePostToFirestore(judul, isi, tanggal, namaLengkap, nik, fotoProfil, jumlahKomentar, imageUrl)
             }
         } else {
-            savePostToFirestore(judul, isi, tanggal, dummyNama, dummyFotoProfil, jumlahKomentar, null)
+            savePostToFirestore(judul, isi, tanggal, namaLengkap,nik , fotoProfil, jumlahKomentar, null)
         }
     }
 
@@ -196,19 +218,28 @@ class BuatPostinganActivity : AppCompatActivity() {
     }
 
     // simpan data postingan ke Firestore
+// simpan data postingan ke Firestore
     private fun savePostToFirestore(
-        judul: String, isi: String, tanggal: String,
-        nama: String, fotoProfil: String, jumlahKomentar: Int, urlGambar: String?
+        judul: String,
+        isi: String,
+        tanggal: String,
+        nama: String,
+        nik: String,
+        fotoProfil: String,
+        jumlahKomentar: Int,
+        urlGambar: String?
     ) {
         val postMap = hashMapOf(
             "judul" to judul,
             "isi" to isi,
             "tanggal" to tanggal,
             "nama" to nama,
+            "nik" to nik,
             "fotoProfil" to fotoProfil,
             "jumlahKomentar" to jumlahKomentar,
             "lokasi" to "Lokasi Dummy"
         )
+
         if (!urlGambar.isNullOrEmpty()) postMap["urlGambar"] = urlGambar
 
         db.collection("forum").add(postMap)
@@ -222,6 +253,7 @@ class BuatPostinganActivity : AppCompatActivity() {
                 Toast.makeText(this, "Gagal menyimpan ke Firestore", Toast.LENGTH_SHORT).show()
             }
     }
+
 
     // dialog konfirmasi
     private fun showConfirmationDialog(title: String, message: String, onConfirm: () -> Unit) {

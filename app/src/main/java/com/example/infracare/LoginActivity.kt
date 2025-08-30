@@ -27,6 +27,8 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
         setContentView(R.layout.activity_login)
 
         emailEditText = findViewById(R.id.emailEditText)
@@ -36,6 +38,15 @@ class LoginActivity : AppCompatActivity() {
         forgotPasswordTextView = findViewById(R.id.tv_lupapassword)
         daftarTextView = findViewById(R.id.tv_daftar)
         progressBar = findViewById(R.id.progressBar)  // pastikan ada progressBar di layout
+
+        val sharedPref = getSharedPreferences("UserSession", MODE_PRIVATE)
+        val remember = sharedPref.getBoolean("remember", false)
+
+        if (remember) {
+            emailEditText.setText(sharedPref.getString("email", ""))
+            passwordEditText.setText(sharedPref.getString("password", ""))
+            rememberCheckBox.isChecked = true
+        }
 
         loginButton.setOnClickListener {
             val email = emailEditText.text.toString().trim()
@@ -76,11 +87,47 @@ class LoginActivity : AppCompatActivity() {
                         val inputPasswordHash = hashPassword(password)
 
                         if (inputPasswordHash == passwordHashFirestore) {
+                            val userId = userDoc.id
+                            val emailFirestore = userDoc.getString("email") ?: ""
+                            val namaLengkap = userDoc.getString("namaLengkap") ?: ""
+                            val fotoProfil = userDoc.getString("fotoProfil") ?: ""
+                            val nik = userDoc.getString("nik") ?: ""
+                            val role = userDoc.getString("role") ?: "User"
+
+                            val sharedPref = getSharedPreferences("UserSession", MODE_PRIVATE)
+                            with(sharedPref.edit()) {
+                                putString("userId", userId)
+                                putString("email", emailFirestore)
+                                putString("namaLengkap", namaLengkap)
+                                putString("fotoProfil", fotoProfil)
+                                putString("nik", nik)
+                                putString("role", role)
+                                apply()
+                            }
+
                             Toast.makeText(this, "Login berhasil", Toast.LENGTH_SHORT).show()
+
+                            if (rememberCheckBox.isChecked) {
+                                with(sharedPref.edit()) {
+                                    putBoolean("remember", true)
+                                    putString("email", email)
+                                    putString("password", password)
+                                    apply()
+                                }
+                            } else {
+                                with(sharedPref.edit()) {
+                                    putBoolean("remember", false)
+                                    remove("email")
+                                    remove("password")
+                                    apply()
+                                }
+                            }
+
                             val intent = Intent(this, MainActivity::class.java)
                             startActivity(intent)
                             finish()
-                        } else {
+                        }
+                        else {
                             loginButton.isEnabled = true
                             Toast.makeText(this, "Kata sandi salah", Toast.LENGTH_SHORT).show()
                         }

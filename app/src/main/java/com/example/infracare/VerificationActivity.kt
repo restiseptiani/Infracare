@@ -37,6 +37,7 @@ class VerificationActivity : AppCompatActivity() {
         val email = intent.getStringExtra("email") ?: ""
         val password = intent.getStringExtra("password") ?: ""
         val otpKirim = intent.getStringExtra("otp") ?: ""
+        val fotoProfil =intent.getStringExtra("fotoProfil") ?: ""
 
         setupOtpMove(otp1, otp2)
         setupOtpMove(otp2, otp3)
@@ -63,6 +64,7 @@ class VerificationActivity : AppCompatActivity() {
                     "noTelepon" to noTelp,
                     "email" to email,
                     "password" to hashedPassword,
+                    "fotoProfil" to fotoProfil,
                     "role" to "warga"
                 )
 
