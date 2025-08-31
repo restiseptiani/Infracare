@@ -26,6 +26,7 @@ class ProfileFragment : Fragment() {
         val btnLogout = view.findViewById<Button>(R.id.btnLogout)
         val layoutBahasa = view.findViewById<LinearLayout>(R.id.layoutBahasa)
         val ivProfile = view.findViewById<ImageView>(R.id.profileImage)
+        val layoutEditProfil = view.findViewById<LinearLayout>(R.id.layoutEditProfil)
 
         val sharedPref = requireContext().getSharedPreferences("UserSession", android.content.Context.MODE_PRIVATE)
         val namaLengkap = sharedPref.getString("namaLengkap", "User")
@@ -60,6 +61,14 @@ class ProfileFragment : Fragment() {
         btnLogout.setOnClickListener {
             showLogoutDialog()
         }
+        layoutEditProfil.setOnClickListener {
+            // Pindah ke EditProfileFragment
+            val fragment = EditProfileFragment()
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, fragment) // ganti dengan ID container fragment kamu
+                .addToBackStack(null) // supaya bisa balik pakai tombol back
+                .commit()
+        }
 
         layoutBahasa.setOnClickListener {
             val intent = Intent(android.provider.Settings.ACTION_LOCALE_SETTINGS)
@@ -76,6 +85,7 @@ class ProfileFragment : Fragment() {
         val tvMessage = dialogView.findViewById<TextView>(R.id.tvMessage)
         val tvTinjauUlang = dialogView.findViewById<TextView>(R.id.tvTinjauUlang)
         val tvKirim = dialogView.findViewById<TextView>(R.id.tvKirim)
+
 
         tvTitle.text = "Logout dari aplikasi?"
         tvMessage.text = "Pilih Logout untuk keluar dari aplikasi.\nPilih Batal jika ingin tetap masuk."
@@ -110,6 +120,7 @@ class ProfileFragment : Fragment() {
 
         dialog.show()
     }
+
 
     private fun logout() {
         val sharedPreferences = requireActivity().getSharedPreferences("user_session", 0)

@@ -57,7 +57,7 @@ class DiterimaFragment : Fragment() {
 
         if (nikUser != null) {
             db.collection("laporan")
-                .whereEqualTo("status", "Diterima")
+                .whereEqualTo("status", "Menunggu Konfirmasi")
                 .whereEqualTo("nik", nikUser) // ✅ hanya ambil laporan dari user login
                 .get()
                 .addOnSuccessListener { documents ->

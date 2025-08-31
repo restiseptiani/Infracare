@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="16dp"
+    android:background="@color/primary">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <!-- Foto Profil -->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivProfile"
+            android:layout_marginStart="8dp"
+            app:shapeAppearanceOverlay="@style/CircleImageView"
+            app:strokeColor="@color/white"
+            app:strokeWidth="2dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="32dp"
+            android:scaleType="centerCrop"/>
+
+        <!-- NIK (tidak bisa diubah) -->
+        <EditText
+            android:id="@+id/etNik"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="NIK"
+            android:enabled="false"
+            android:inputType="number"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@color/secondary"/>
+
+        <!-- Nama Lengkap -->
+        <EditText
+            android:id="@+id/etNama"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nama Lengkap"
+            android:inputType="textPersonName"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@color/secondary"
+            android:layout_marginTop="12dp"/>
+
+        <!-- Email (tidak bisa diubah) -->
+        <EditText
+            android:id="@+id/etEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Email"
+            android:enabled="false"
+            android:inputType="textEmailAddress"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@color/secondary"
+            android:layout_marginTop="12dp"/>
+
+        <!-- Nomor Telepon -->
+        <EditText
+            android:id="@+id/etTelepon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nomor Telepon"
+            android:inputType="phone"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@color/secondary"
+            android:layout_marginTop="12dp"/>
+
+        <!-- Save Button -->
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="Simpan Perubahan"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:layout_marginTop="64dp"
+            android:background="@drawable/bg_button_orange"
+            app:backgroundTint="@null"/>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            style="?android:attr/progressBarStyleLarge" />
+
+    </LinearLayout>
+</ScrollView>

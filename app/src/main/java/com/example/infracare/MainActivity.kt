@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
                     .addOnSuccessListener { docs ->
                         val countToday = docs.size()
 
-                        if (countToday < 2) {
+                        if (countToday <2) {
                             // Masih boleh upload
                             val intent = Intent(this, CameraActivity::class.java)
                             startActivity(intent)
