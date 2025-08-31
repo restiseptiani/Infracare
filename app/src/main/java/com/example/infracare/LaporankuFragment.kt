@@ -65,7 +65,7 @@ class LaporankuFragment : Fragment() {
 
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = when (position) {
-                0 -> "Diterima"
+                0 -> "Menunggu Konfirmasi"
                 1 -> "Ditangani"
                 2 -> "Disposisi"
                 3 -> "Selesai"

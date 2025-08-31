@@ -268,7 +268,7 @@ class FormLaporanActivity : AppCompatActivity() {
             "lokasi" to edtLokasi.text.toString(),
             "rw" to rw,
             "rt" to rt,
-            "status" to "Diterima",
+            "status" to "Menunggu Konfirmasi",
             "tanggal" to getTodayDate(),
             "imageUrl" to imageUrl,
             "nik" to currentNik,
