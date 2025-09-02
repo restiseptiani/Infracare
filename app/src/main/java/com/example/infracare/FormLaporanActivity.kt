@@ -272,7 +272,8 @@ class FormLaporanActivity : AppCompatActivity() {
             "tanggal" to getTodayDate(),
             "imageUrl" to imageUrl,
             "nik" to currentNik,
-            "nama" to currentNama
+            "nama" to currentNama,
+            "proses" to "Menunggu Konfirmasi"
         )
 
         db.collection("laporan")

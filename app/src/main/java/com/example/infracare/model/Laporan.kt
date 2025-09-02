@@ -15,5 +15,6 @@ data class Laporan(
     val rt: String = "",
     val rw: String = "",
     val nik: String = "",
-    val nama: String = ""
+    val nama: String = "",
+    val proses: String = ""
 ) : Parcelable
